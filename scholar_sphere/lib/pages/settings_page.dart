@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scholar_sphere/pages/setting_item.dart';
-import 'package:scholar_sphere/pages/setting_switch.dart';
+import 'package:scholar_sphere/util/setting_item.dart';
+import 'package:scholar_sphere/util/setting_switch.dart';
 import 'package:scholar_sphere/pages/forward_button.dart';
 import 'package:scholar_sphere/pages/edit_screen.dart';
 

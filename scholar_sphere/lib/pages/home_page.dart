@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:scholar_sphere/util/ec_tile.dart';
 import 'package:scholar_sphere/util/emotion_face.dart';
 
@@ -13,21 +14,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int myIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         //backgroundColor: Colors.blue[800],
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-            BottomNavigationBarItem(
-                icon: Transform.flip(
-                  flipX: true,
-                  child: const Icon(Icons.reply),
-                ),
-                label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
-          ],
+        bottomNavigationBar: Container(
+          color: Colors.black,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20),
+            child: GNav(
+              backgroundColor: Colors.black,
+              color: Colors.white,
+              activeColor: Colors.white,
+              tabBackgroundColor: Colors.grey.shade800,
+              padding: EdgeInsets.all(16),
+              gap: 8,
+              tabs: [
+                GButton(icon: Icons.home, text: "Home",),
+                GButton(icon: Icons.group, text: "Social",),
+                GButton(icon: Icons.settings, text: "Settings",),
+              ],
+            ),
+          ),
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -35,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                   colors: [
-                Colors.deepPurple,
+                Color(0xff56018D),
                 Colors.pink,
               ])),
           child: SafeArea(
@@ -212,6 +221,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       padding: EdgeInsets.all(25),
                       color: Colors.grey[300],
+                      
                       child: Center(
                         child: Column(
                           children: [

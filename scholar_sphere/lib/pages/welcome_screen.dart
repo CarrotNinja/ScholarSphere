@@ -13,10 +13,20 @@ class WelcomeScreen extends StatelessWidget {
           height: double.infinity,
           width: double.infinity,
           decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Color(0xffB81736),
-            Color(0xff2B1836),
-          ])),
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  stops: [
+                    0.3,
+                    0.6,
+                    0.9
+                  ],
+                  colors: [
+                Color(0xff56018D),
+                
+                Color(0xff8B139C),
+                Colors.pink,
+              ])),
           child: Column(
             children: [
               Padding(
