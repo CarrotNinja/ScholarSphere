@@ -111,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             )),
                       ),
                       TextField(
+                        obscureText: true,
                         controller: _controllerPassword,
                         decoration: InputDecoration(
                             suffixIcon:

@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
+import 'package:scholar_sphere/pages/awards_page.dart';
 import 'package:scholar_sphere/util/ec_tile.dart';
 import 'package:scholar_sphere/util/emotion_face.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,15 +22,53 @@ class _HomePageState extends State<HomePage> {
   int myIndex = 0;
   final User? user = Auth().currentUser;
 
-  Future<void> signOut() async{
+  String docID = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchDocID();
+  }
+
+  Future<void> fetchDocID() async {
+    var user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Fetch docID based on user's email or any other criteria
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: user.email)
+          .get()
+          .then((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          // Assuming you expect only one document
+          setState(() {
+            docID = snapshot.docs[0].id;
+          });
+        } else {
+          setState(() {
+            // Handle case where no document is found
+            docID = ''; // or set it to some default value
+          });
+        }
+      }).catchError((error) {
+        print('Error fetching docID: $error');
+        setState(() {
+          docID = ''; // Handle error case
+        });
+      });
+    }
+  }
+
+  Future<void> signOut() async {
     await Auth().signOut();
   }
 
-  Widget _userUID(){
+  Widget _userUID() {
     return Text(user?.email ?? 'User email');
   }
 
-  Widget _signOutButton(){
+  Widget _signOutButton() {
     return ElevatedButton(onPressed: signOut, child: const Text("Sign Out"));
   }
 
@@ -38,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: Container(
           color: Colors.black,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
             child: GNav(
               backgroundColor: Colors.black,
               color: Colors.white,
@@ -47,9 +88,18 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(16),
               gap: 8,
               tabs: [
-                GButton(icon: Icons.home, text: "Home",),
-                GButton(icon: Icons.group, text: "Social",),
-                GButton(icon: Icons.settings, text: "Settings",),
+                GButton(
+                  icon: Icons.home,
+                  text: "Home",
+                ),
+                GButton(
+                  icon: Icons.group,
+                  text: "Social",
+                ),
+                GButton(
+                  icon: Icons.settings,
+                  text: "Settings",
+                ),
               ],
             ),
           ),
@@ -87,14 +137,36 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 ],
                               ),
-                              const Text(
-                                "Hi Razam!",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              FutureBuilder<String>(
+                                future: GetUserName(documentId: docID)
+                                    .getUserName(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Text('Loading...',
+                                        style: TextStyle(color: Colors.white));
+                                  } else if (snapshot.hasError) {
+                                    print(snapshot.error);
+                                    return Text('Error: ${snapshot.error}',
+                                        style: TextStyle(color: Colors.white));
+                                  } else if (snapshot.hasData &&
+                                      snapshot.data != null) {
+                                    String userName = snapshot.data!;
+                                    return Text(
+                                      "Hi $userName!",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  } else {
+                                    // Handle case where data is not available
+                                    return Text('Username not available',
+                                        style: TextStyle(color: Colors.white));
+                                  }
+                                },
+                              )
                             ],
                           ),
                           //Noti
@@ -245,7 +317,6 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       padding: EdgeInsets.all(25),
                       color: Colors.grey[300],
-                      
                       child: Center(
                         child: Column(
                           children: [
@@ -275,10 +346,19 @@ class _HomePageState extends State<HomePage> {
                                     EcName: 'Academics',
                                     color: Colors.orange,
                                   ),
-                                  EcTile(
-                                    icon: Icons.emoji_events,
-                                    EcName: 'Awards',
-                                    color: Colors.blue,
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AwardsPage()));
+                                    },
+                                    child: EcTile(
+                                      icon: Icons.emoji_events,
+                                      EcName: 'Awards',
+                                      color: Colors.blue,
+                                    ),
                                   ),
                                   EcTile(
                                     icon: Icons.groups,

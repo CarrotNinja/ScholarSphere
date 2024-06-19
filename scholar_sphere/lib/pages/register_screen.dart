@@ -163,6 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             )),
                       ),
                       TextField(
+                        obscureText: true,
                         controller:_controllerPassword,
                         decoration: InputDecoration(
                             suffixIcon:
@@ -175,6 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             )),
                       ),
                       TextField(
+                        obscureText: true,
                         controller: _controllerConfirmPassword,
                         decoration: InputDecoration(
                             suffixIcon:
