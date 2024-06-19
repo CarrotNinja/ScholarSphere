@@ -5,7 +5,6 @@ class ToDoList1 extends StatefulWidget {
   _TodoListState createState() => _TodoListState();
 }
 
-
 class _TodoListState extends State<ToDoList1> {
   final List<String> _todoItems = [];
 
@@ -24,7 +23,7 @@ class _TodoListState extends State<ToDoList1> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('New task'),
+          title: Text('New Task'),
           content: TextField(
             autofocus: true,
             onSubmitted: (val) {
@@ -44,11 +43,18 @@ class _TodoListState extends State<ToDoList1> {
   }
 
   Widget _buildTodoItem(String todoText, int index) {
-    return ListTile(
-      title: Text(todoText),
-      trailing: IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: () => _removeTodoItem(index),
+    return Card(
+      elevation: 4,
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: ListTile(
+        title: Text(
+          todoText,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+        trailing: IconButton(
+          icon: Icon(Icons.delete, color: Colors.red),
+          onPressed: () => _removeTodoItem(index),
+        ),
       ),
     );
   }
@@ -66,13 +72,39 @@ class _TodoListState extends State<ToDoList1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('To-Do List'),
+        title: Text('To-Do List', style: TextStyle(
+          fontWeight: FontWeight.bold
+        ),),
         centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 130, 100, 210),
       ),
-      body: _buildTodoList(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [const Color.fromARGB(255, 130, 100, 210), const Color.fromARGB(255, 130, 100, 210)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: _todoItems.isEmpty
+              ? Center(
+                  child: Text(
+                    'No tasks just yet. Add a task!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                )
+              : _buildTodoList(),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _promptAddTodoItem,
         tooltip: 'Add task',
+        backgroundColor: const Color.fromARGB(255, 245, 207, 94),
         child: Icon(Icons.add),
       ),
     );
