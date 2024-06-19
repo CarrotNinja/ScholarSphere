@@ -59,7 +59,7 @@ class _EditAccountScreenState extends State<ChangeAccountScreen> {
                 widget: Column(
                   children: [
                     Image.asset(
-                      "assets/avatar.png",
+                      "assets/avatar.webp",
                       height: 100,
                       width: 100,
                     ),
