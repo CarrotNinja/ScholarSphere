@@ -11,7 +11,7 @@ class EditAccountScreen extends StatelessWidget {
         title: const Text('Edit Account'),
       ),
       body: const Center(
-        child: Text('Edit Account Screen'),
+        child: Text('Edit Your Account Screen'),
       ),
     );
   }
