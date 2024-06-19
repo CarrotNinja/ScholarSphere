@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:scholar_sphere/backend/widget_tree.dart';
+import 'package:scholar_sphere/pages/awards_page.dart';
 import 'package:scholar_sphere/pages/home_page.dart';
 import 'package:scholar_sphere/pages/settings_page.dart';
 import 'package:scholar_sphere/pages/to_do.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Poppins'),
       debugShowCheckedModeBanner: false,
-      home: WidgetTree(),
+      home: AwardsPage(),
     );
   }
 }

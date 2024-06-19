@@ -49,54 +49,46 @@ class _AwardsPageState extends State<AwardsPage> {
   }
 
   Widget _buildItem(Map<String, dynamic> Item, int index) {
-    return Dismissible(
-      key: Key(Item['task']),
-      direction: DismissDirection.endToStart,
-      onDismissed: (direction) {
-        _removeItem(index);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Task "${Item['task']}" deleted')),
-        );
-      },
-      background: Container(
-        color: Colors.red,
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Icon(Icons.delete, color: Colors.white),
-      ),
-      child: Card(
-        elevation: 4,
-        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: ListTile(
-          leading: Checkbox(
-            value: Item['completed'],
-            onChanged: (bool? value) {
-              _toggleItem(index);
-            },
-          ),
-          title: Text(
-            Item['task'],
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              decoration: Item['completed']
-                  ? TextDecoration.lineThrough
-                  : TextDecoration.none,
-            ),
+  return Dismissible(
+    key: Key(Item['task']),
+    direction: DismissDirection.endToStart,
+    onDismissed: (direction) {
+      _removeItem(index);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Task "${Item['task']}" deleted')),
+      );
+    },
+    background: Container(
+      color: Colors.red,
+      alignment: Alignment.centerRight,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Icon(Icons.delete, color: Colors.white),
+    ),
+    child: Card(
+      elevation: 4,
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: ListTile(
+        title: Text(
+          Item['task'],
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildList() {
-    return ListView.builder(
-      itemCount: _Items.length,
-      itemBuilder: (context, index) {
-        return _buildItem(_Items[index], index);
-      },
-    );
-  }
+Widget _buildList() {
+  return ListView.builder(
+    itemCount: _Items.length,
+    itemBuilder: (context, index) {
+      return _buildItem(_Items[index], index);
+    },
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
