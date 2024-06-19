@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scholar_sphere/pages/home_page.dart';
 import 'package:scholar_sphere/pages/settings_page.dart';
+import 'package:scholar_sphere/pages/to_do.dart';
 import 'package:scholar_sphere/pages/welcome_screen.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Poppins'),
       debugShowCheckedModeBanner: false,
-      home: SettingsPage(),
+      home: ToDoList1(),
     );
   }
 }
