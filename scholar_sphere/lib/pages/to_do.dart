@@ -66,7 +66,8 @@ class _TodoListState extends State<ToDoList1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TO-DO LIST'),
+        title: Text('To-Do List'),
+        centerTitle: true,
       ),
       body: _buildTodoList(),
       floatingActionButton: FloatingActionButton(
