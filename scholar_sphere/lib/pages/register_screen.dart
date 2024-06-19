@@ -17,17 +17,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerConfirmPassword = TextEditingController();
 
   Future<void> createUserWithEmailAndPassword() async{
     try{
-      await Auth().createUserWithEmailAndPassword(email: _controllerEmail.text,password: _controllerPassword.text);
-      Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => MyApp()));
+      if(passwordConfirmed()){
+        await Auth().createUserWithEmailAndPassword(email: _controllerEmail.text,password: _controllerPassword.text);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyApp()));
+      }else{
+        showErrorMessage("Passwords don't match");
+      }
+
+      
     } on FirebaseAuthException catch(e){
       setState(() {
         errorMessage = e.message;
       });
+      showErrorMessage(errorMessage!);
     }
+  }
+
+  void showErrorMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return  AlertDialog(
+            title: Text(message,
+              style: TextStyle(color: Colors.black),
+            ),
+          );
+        });
+  }
+
+  bool passwordConfirmed(){
+    return _controllerPassword.text.trim()==_controllerConfirmPassword.text.trim();
   }
 
   Widget _errorMessage(){
@@ -121,6 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             )),
                       ),
                       TextField(
+                        controller: _controllerConfirmPassword,
                         decoration: InputDecoration(
                             suffixIcon:
                                 Icon(Icons.visibility_off, color: Colors.grey),
