@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholar_sphere/pages/appearance_page.dart';
 import 'package:scholar_sphere/util/setting_item.dart';
 import 'package:scholar_sphere/util/setting_switch.dart';
 import 'package:scholar_sphere/pages/forward_button.dart';
@@ -101,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
               SettingItem(
                 title: "Language",
                 icon: Icons.language,
-                bgColor: Colors.orange.shade100,
+                bgColor: Color.fromARGB(255, 248, 223, 186),
                 iconColor: Colors.orange,
                 value: "English",
                 onTap: () {},
@@ -142,6 +143,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 bgColor: Color.fromARGB(255, 191, 253, 170),
                 iconColor: Color.fromARGB(255, 36, 134, 0),
                 onTap: () {},
+              ),
+              const SizedBox(height: 20),
+              SettingItem(
+                title: "Appearance",
+                icon: Icons.color_lens,
+                bgColor: Colors.pink.shade100,
+                iconColor: Colors.pink,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AppearancePage()),
+                  );
+                },
               ),
             ],
           ),
