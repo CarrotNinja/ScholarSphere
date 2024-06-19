@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/pages/register_screen.dart';
+import 'package:scholar_sphere/main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,6 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> signInWithEmailAndPassword() async {
     try {
       await Auth().signInWithEmailAndPassword(email: _controllerEmail.text, password: _controllerPassword.text);
+       Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => MyApp()));
     } on FirebaseAuthException catch(e){
       setState(() {
         errorMessage = e.message;
