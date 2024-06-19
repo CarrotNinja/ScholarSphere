@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scholar_sphere/backend/auth.dart';
+import 'package:scholar_sphere/pages/forgot_password_page.dart';
 import 'package:scholar_sphere/pages/register_screen.dart';
 import 'package:scholar_sphere/main.dart';
 
@@ -126,12 +127,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                              color: Color(0xff281537)),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute(builder: (context){
+                              return ForgotPasswordPage();
+                            }));
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                                color: Color(0xff281537)),
+                          ),
                         ),
                       ),
                       SizedBox(

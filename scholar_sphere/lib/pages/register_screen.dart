@@ -4,6 +4,7 @@ import 'package:scholar_sphere/pages/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,27 +15,45 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   String? errorMessage = '';
-
+  final TextEditingController _controllerFirstName = TextEditingController();
+  final TextEditingController _controllerLastName = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerConfirmPassword = TextEditingController();
 
+  @override
+  void dispose() {
+    _controllerConfirmPassword.dispose();
+    _controllerEmail.dispose();
+    _controllerFirstName.dispose();
+    _controllerLastName.dispose();
+    super.dispose();
+  }
+
   Future<void> createUserWithEmailAndPassword() async{
     try{
       if(passwordConfirmed()){
-        await Auth().createUserWithEmailAndPassword(email: _controllerEmail.text,password: _controllerPassword.text);
+        await Auth().createUserWithEmailAndPassword(email: _controllerEmail.text.trim(),password: _controllerPassword.text);
+        addUserDetails(_controllerFirstName.text.trim(), _controllerLastName.text.trim(), _controllerEmail.text.trim());
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyApp()));
+        //Add user details
       }else{
         showErrorMessage("Passwords don't match");
-      }
-
-      
+      }  
     } on FirebaseAuthException catch(e){
       setState(() {
         errorMessage = e.message;
       });
       showErrorMessage(errorMessage!);
     }
+  }
+
+  Future addUserDetails(String firstName, String lastName, String email) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'first name':firstName,
+      'last name':lastName,
+      'email':email,
+    });
   }
 
   void showErrorMessage(String message) {
@@ -110,10 +129,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextField(
+                        controller: _controllerFirstName,
                         decoration: InputDecoration(
                             suffixIcon: Icon(Icons.check, color: Colors.grey),
                             label: Text(
-                              'Full Name',
+                              'First Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            )),
+                      ),
+                      TextField(
+                        controller: _controllerLastName,
+                        decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.check, color: Colors.grey),
+                            label: Text(
+                              'Last Name',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
