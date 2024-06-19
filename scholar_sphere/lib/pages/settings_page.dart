@@ -139,7 +139,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 20),
               SettingItem(
                 title: "Connections",
-                icon: Icons.send,
+                icon: Icons.send_sharp,
                 bgColor: Color.fromARGB(255, 239, 227, 12),
                 iconColor: Color.fromARGB(255, 204, 201, 8),
                 onTap: () {},
