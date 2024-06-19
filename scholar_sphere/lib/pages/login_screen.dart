@@ -27,9 +27,20 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         errorMessage = e.message;
       });
+      showErrorMessage(errorMessage!);
     }
   }
-
+  void showErrorMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return  AlertDialog(
+            title: Text(message,
+              style: TextStyle(color: Colors.black),
+            ),
+          );
+        });
+  }
   Widget _errorMessage(){
     return Text(errorMessage=='' ? '': 'Humm ? $errorMessage');
   }
