@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9e7d9f06-4933-473f-9746-85d70f874d9a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+=======
       <change beforePath="$PROJECT_DIR$/scholar_sphere/.metadata" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/.metadata" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scholar_sphere/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/android/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scholar_sphere/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/android/app/src/main/AndroidManifest.xml" afterDir="false" />
@@ -19,6 +21,7 @@
       <change beforePath="$PROJECT_DIR$/scholar_sphere/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scholar_sphere/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scholar_sphere/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/windows/flutter/generated_plugins.cmake" afterDir="false" />
+>>>>>>> 6f93e1c04de029e082a56866508840c9bb49266c
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
