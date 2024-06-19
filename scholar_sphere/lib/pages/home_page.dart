@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:scholar_sphere/util/ec_tile.dart';
 import 'package:scholar_sphere/util/emotion_face.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scholar_sphere/backend/auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +17,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int myIndex = 0;
+  final User? user = Auth().currentUser;
+
+  Future<void> signOut() async{
+    await Auth().signOut();
+  }
+
+  Widget _userUID(){
+    return Text(user?.email ?? 'User email');
+  }
+
+  Widget _signOutButton(){
+    return ElevatedButton(onPressed: signOut, child: const Text("Sign Out"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,9 +223,17 @@ class _HomePageState extends State<HomePage> {
                           )
                         ],
                       ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _userUID(),
+                          _signOutButton(),
+                        ],
+                      ),
                       SizedBox(
-                        height: 25,
-                      )
+                        height: 5,
+                      ),
                     ],
                   ),
                 ),

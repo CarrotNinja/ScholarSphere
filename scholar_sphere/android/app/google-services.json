@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1064840693292",
+    "project_id": "scholar-sphere-fbla",
+    "storage_bucket": "scholar-sphere-fbla.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064840693292:android:39b1b0f7ae483f46293389",
+        "android_client_info": {
+          "package_name": "com.example.scholar_sphere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOLdYu362nvlso-YObV8Z-S9fdIRnhWwI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

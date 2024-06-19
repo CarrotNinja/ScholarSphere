@@ -1,9 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/pages/register_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String? errorMessage = '';
+
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
+
+  Future<void> signInWithEmailAndPassword() async {
+    try {
+      await Auth().signInWithEmailAndPassword(email: _controllerEmail.text, password: _controllerPassword.text);
+    } on FirebaseAuthException catch(e){
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  Widget _errorMessage(){
+    return Text(errorMessage=='' ? '': 'Humm ? $errorMessage');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +85,7 @@ class LoginScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextField(
+                        controller: _controllerEmail,
                         decoration: InputDecoration(
                             suffixIcon: Icon(Icons.check, color: Colors.grey),
                             label: Text(
@@ -69,6 +96,7 @@ class LoginScreen extends StatelessWidget {
                             )),
                       ),
                       TextField(
+                        controller: _controllerPassword,
                         decoration: InputDecoration(
                             suffixIcon:
                                 Icon(Icons.visibility_off, color: Colors.grey),
@@ -95,32 +123,35 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(
                         height: 70,
                       ),
-                      Container(
-                        height: 55,
-                        width: 300,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  stops: [
-                    0.3,
-                    0.6,
-                    0.9
-                  ],
-                  colors: [
-                Color(0xff56018D),
-                
-                Color(0xff8B139C),
-                Colors.pink,
-              ])),
-                        child: Center(
-                          child: Text('SIGN IN',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white,
-                              )),
+                      GestureDetector(
+                        onTap:signInWithEmailAndPassword,
+                        child: Container(
+                          height: 55,
+                          width: 300,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              gradient: LinearGradient(
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          stops: [
+                                            0.3,
+                                            0.6,
+                                            0.9
+                                          ],
+                                          colors: [
+                                        Color(0xff56018D),
+                                        
+                                        Color(0xff8B139C),
+                                        Colors.pink,
+                                      ])),
+                          child: Center(
+                            child: Text('SIGN IN',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                )),
+                          ),
                         ),
                       ),
                       SizedBox(
