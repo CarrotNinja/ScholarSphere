@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e7d9f06-4933-473f-9746-85d70f874d9a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/scholar_sphere/ios/Flutter/Debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/ios/Flutter/Debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scholar_sphere/ios/Flutter/Release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/ios/Flutter/Release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scholar_sphere/macos/Flutter/Flutter-Debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/macos/Flutter/Flutter-Debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scholar_sphere/macos/Flutter/Flutter-Release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/macos/Flutter/Flutter-Release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scholar_sphere/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scholar_sphere/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scholar_sphere/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/scholar_sphere/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

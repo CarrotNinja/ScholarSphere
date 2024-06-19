@@ -82,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const EditAccountScreen(),
+                            builder: (context) => const ChangeAccountScreen(),
                           ),
                         );
                       },
@@ -101,7 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 20),
               SettingItem(
                 title: "Language",
-                icon: Icons.earbuds,
+                icon: Icons.language,
                 bgColor: Colors.orange.shade100,
                 iconColor: Colors.orange,
                 value: "English",
@@ -110,7 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 20),
               SettingItem(
                 title: "Notifications",
-                icon: Icons.notification_add,
+                icon: Icons.notifications,
                 bgColor: Colors.blue.shade100,
                 iconColor: Colors.blue,
                 onTap: () {},
@@ -118,7 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 20),
               SettingSwitch(
                 title: "Dark Mode",
-                icon: Icons.escalator_sharp,
+                icon: Icons.mode_night,
                 bgColor: Colors.purple.shade100,
                 iconColor: Colors.purple,
                 value: isDarkMode,
@@ -131,7 +131,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 20),
               SettingItem(
                 title: "Help",
-                icon: Icons.do_not_disturb_on_total_silence_sharp,
+                icon: Icons.help,
                 bgColor: Colors.red.shade100,
                 iconColor: Colors.red,
                 onTap: () {},
@@ -139,7 +139,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 20),
               SettingItem(
                 title: "Connections",
-                icon: Icons.do_not_disturb_on_total_silence_sharp,
+                icon: Icons.send,
                 bgColor: Color.fromARGB(255, 239, 227, 12),
                 iconColor: Color.fromARGB(255, 204, 201, 8),
                 onTap: () {},
