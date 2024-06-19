@@ -55,7 +55,7 @@ class _TodoListState extends State<ToDoList1> {
       onDismissed: (direction) {
         _removeTodoItem(index);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Task "${todoItem['task']}" deleted')),
+          SnackBar(content: Text('Task "${todoItem['task']}" deleted; Add a NEW Task!')),
         );
       },
       background: Container(
@@ -78,7 +78,7 @@ class _TodoListState extends State<ToDoList1> {
             todoItem['task'],
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.bold,
               decoration: todoItem['completed']
                   ? TextDecoration.lineThrough
                   : TextDecoration.none,
@@ -119,10 +119,10 @@ class _TodoListState extends State<ToDoList1> {
           child: _todoItems.isEmpty
               ? Center(
                   child: Text(
-                    'No tasks yet. Add a task!',
+                    'No tasks just yet. Add a task!',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 24,
+                      fontSize: 22,
                     ),
                   ),
                 )
@@ -131,8 +131,8 @@ class _TodoListState extends State<ToDoList1> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _promptAddTodoItem,
-        tooltip: 'Add task',
-        backgroundColor: Colors.amber,
+        tooltip: 'Add a task',
+        backgroundColor: const Color.fromARGB(255, 252, 192, 12),
         child: Icon(Icons.add),
       ),
     );
