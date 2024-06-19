@@ -139,8 +139,8 @@ class _SettingsPageState extends State<SettingsPage> {
               SettingItem(
                 title: "Connections",
                 icon: Icons.send_sharp,
-                bgColor: Color.fromARGB(255, 239, 227, 12),
-                iconColor: Color.fromARGB(255, 204, 201, 8),
+                bgColor: Color.fromARGB(255, 191, 253, 170),
+                iconColor: Color.fromARGB(255, 36, 134, 0),
                 onTap: () {},
               ),
             ],
