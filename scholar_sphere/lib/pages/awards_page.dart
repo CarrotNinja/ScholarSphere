@@ -29,7 +29,7 @@ class _AwardsPageState extends State<AwardsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('New Task'),
+          title: Text('New Award'),
           content: TextField(
             autofocus: true,
             onSubmitted: (val) {
