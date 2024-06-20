@@ -6,6 +6,9 @@ import 'package:flutter/widgets.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/pages/awards_page.dart';
+import 'package:scholar_sphere/pages/clubs_page.dart';
+import 'package:scholar_sphere/pages/ec_page.dart';
+import 'package:scholar_sphere/pages/other_page.dart';
 import 'package:scholar_sphere/util/ec_tile.dart';
 import 'package:scholar_sphere/util/emotion_face.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -147,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                                         style: TextStyle(color: Colors.white));
                                   } else if (snapshot.hasError) {
                                     print(snapshot.error);
-                                    return Text('Error: ${snapshot.error}',
+                                    return Text('Error',
                                         style: TextStyle(color: Colors.white));
                                   } else if (snapshot.hasData &&
                                       snapshot.data != null) {
@@ -219,82 +222,7 @@ class _HomePageState extends State<HomePage> {
                         height: 25,
                       ),
 
-                      //How do you feel?
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "How do you feel?",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Icon(
-                            Icons.more_horiz,
-                            color: Colors.white,
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-
-                      //faces
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              EmotionFace(emoticanFace: '🤕'),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                'Bad',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              EmotionFace(emoticanFace: '😐'),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                'Fine',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              EmotionFace(emoticanFace: '😀'),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                'Well',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              EmotionFace(emoticanFace: '🥳'),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                'Excellent',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -352,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  AwardsPage()));
+                                                  AwardsPage(userId: docID,)));
                                     },
                                     child: EcTile(
                                       icon: Icons.emoji_events,
@@ -360,20 +288,47 @@ class _HomePageState extends State<HomePage> {
                                       color: Colors.blue,
                                     ),
                                   ),
-                                  EcTile(
+                                  GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ClubsPage(userId: docID,)));
+                                    },
+                                    child: EcTile(
                                     icon: Icons.groups,
                                     EcName: 'Clubs',
                                     color: Colors.pink,
                                   ),
-                                  EcTile(
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EcsPage(userId: docID,)));
+                                    },
+                                    child: EcTile(
                                     icon: Icons.star,
                                     EcName: 'Extracurriculars',
                                     color: Colors.purple,
                                   ),
-                                  EcTile(
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  OthersPage(userId: docID,)));
+                                    },
+                                    child: EcTile(
                                     icon: Icons.list,
                                     EcName: 'Other',
                                     color: Colors.red,
+                                  ),
                                   ),
                                 ],
                               ),

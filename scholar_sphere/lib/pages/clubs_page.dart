@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AwardsPage extends StatefulWidget {
+class ClubsPage extends StatefulWidget {
   final String userId; // Add userId as a parameter
 
-  AwardsPage({Key? key, required this.userId}) : super(key: key);
+  ClubsPage({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _AwardsPageState createState() => _AwardsPageState();
+  _ClubsPageState createState() => _ClubsPageState();
 }
 
-class _AwardsPageState extends State<AwardsPage> {
+class _ClubsPageState extends State<ClubsPage> {
   final List<Map<String, dynamic>> _Items = [];
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -18,12 +18,12 @@ class _AwardsPageState extends State<AwardsPage> {
   @override
   void initState() {
     super.initState();
-    // Call a method to fetch awards from Firestore when the page loads
-    _fetchAwards();
+    // Call a method to fetch Clubs from Firestore when the page loads
+    _fetchClubs();
   }
 
-  void _fetchAwards() {
-    _firestore.collection('users').doc(widget.userId).collection('awards').get().then((querySnapshot) {
+  void _fetchClubs() {
+    _firestore.collection('users').doc(widget.userId).collection('Clubs').get().then((querySnapshot) {
       setState(() {
         _Items.clear(); // Clear existing items
         querySnapshot.docs.forEach((doc) {
@@ -35,15 +35,15 @@ class _AwardsPageState extends State<AwardsPage> {
         });
       });
     }).catchError((error) {
-      print("Error fetching awards: $error");
+      print("Error fetching Clubs: $error");
       // Handle error gracefully, e.g., show a snackbar
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to fetch awards')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to fetch Clubs')));
     });
   }
 
   void _addItem(String task) {
     if (task.isNotEmpty) {
-      _firestore.collection('users').doc(widget.userId).collection('awards').add({
+      _firestore.collection('users').doc(widget.userId).collection('Clubs').add({
         'task': task,
         'completed': false,
       }).then((value) {
@@ -54,23 +54,23 @@ class _AwardsPageState extends State<AwardsPage> {
             'completed': false,
           });
         });
-      }).catchError((error) => print("Failed to add award: $error"));
+      }).catchError((error) => print("Failed to add Club: $error"));
     }
   }
 
   void _removeItem(String taskId, int index) {
-    _firestore.collection('users').doc(widget.userId).collection('awards').doc(taskId).delete().then((value) {
+    _firestore.collection('users').doc(widget.userId).collection('Clubs').doc(taskId).delete().then((value) {
       setState(() {
         _Items.removeAt(index);
       });
-    }).catchError((error) => print("Failed to delete award: $error"));
+    }).catchError((error) => print("Failed to delete Club: $error"));
   }
 
   Widget _buildList() {
     return _Items.isEmpty
         ? Center(
             child: Text(
-              'No awards yet. Add an award!',
+              'No Clubs yet. Add an Club!',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -92,7 +92,7 @@ class _AwardsPageState extends State<AwardsPage> {
       onDismissed: (direction) {
         _removeItem(item['taskId'], index);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Award "${item['task']}" deleted')),
+          SnackBar(content: Text('Club "${item['task']}" deleted')),
         );
       },
       background: Container(
@@ -122,7 +122,7 @@ class _AwardsPageState extends State<AwardsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('New Award'),
+          title: Text('New Club'),
           content: TextField(
             autofocus: true,
             onSubmitted: (val) {
@@ -146,7 +146,7 @@ class _AwardsPageState extends State<AwardsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Awards',
+          'Clubs',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
