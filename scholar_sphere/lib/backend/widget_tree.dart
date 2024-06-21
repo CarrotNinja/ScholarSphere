@@ -1,9 +1,7 @@
-import 'package:scholar_sphere/backend/auth.dart';
-import 'package:scholar_sphere/pages/home_page.dart';
-import 'package:scholar_sphere/pages/register_screen.dart';
-import 'package:scholar_sphere/pages/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/pages/welcome_screen.dart';
+import 'package:scholar_sphere/home_page_with_nav.dart'; // import this new file
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({super.key});
@@ -17,13 +15,15 @@ class _WidgetTreeState extends State<WidgetTree> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: Auth().authStateChanges,
-      builder: (context, snapshot){
-        if(snapshot.hasData){
-          return HomePage();
-        }else{
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          // User is logged in
+          return HomePageWithNav();
+        } else {
+          // User is not logged in
           return const WelcomeScreen();
         }
-      }
-      );
+      },
+    );
   }
 }
