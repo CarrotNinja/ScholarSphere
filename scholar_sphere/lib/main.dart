@@ -5,7 +5,6 @@ import 'package:scholar_sphere/pages/awards_page.dart';
 import 'package:scholar_sphere/pages/home_page.dart';
 import 'package:scholar_sphere/pages/settings_page.dart';
 import 'package:scholar_sphere/pages/to_do.dart';
-import 'package:scholar_sphere/pages/transcript_page.dart';
 import 'package:scholar_sphere/pages/welcome_screen.dart';
 import 'package:scholar_sphere/backend/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Poppins'),
       debugShowCheckedModeBanner: false,
-      home: TranscriptUploader(),
+      home: WidgetTree(),
     );
   }
 }
