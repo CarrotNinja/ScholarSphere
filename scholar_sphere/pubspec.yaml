@@ -30,6 +30,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  file_picker: ^5.0.1
+  flutter_tesseract_ocr: ^0.3.0
+
+
+
 
   
     #ionicons: ^0.1.0
