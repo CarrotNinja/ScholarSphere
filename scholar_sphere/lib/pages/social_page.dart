@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:scholar_sphere/backend/auth.dart';
+import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 
 class SocialPage extends StatefulWidget {
   const SocialPage({super.key});
@@ -10,6 +14,41 @@ class SocialPage extends StatefulWidget {
 
 class _SocialPageState extends State<SocialPage> {
   int myIndex = 1; // Assuming this page is the second tab
+   final User? user = Auth().currentUser;
+
+  String docID = "";
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDocID();
+  }
+
+  Future<void> fetchDocID() async {
+    var user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: user.email)
+          .get()
+          .then((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          setState(() {
+            docID = snapshot.docs[0].id;
+          });
+        } else {
+          setState(() {
+            docID = '';
+          });
+        }
+      }).catchError((error) {
+        print('Error fetching docID: $error');
+        setState(() {
+          docID = '';
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +89,34 @@ class _SocialPageState extends State<SocialPage> {
                                 )
                               ],
                             ),
-                            Text(
-                              "Hi User!",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            FutureBuilder<String>(
+                              future: GetUserName(documentId: docID)
+                                  .getUserName(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Text('Loading...',
+                                      style: TextStyle(color: Colors.white));
+                                } else if (snapshot.hasError) {
+                                  print(snapshot.error);
+                                  return Text('Error',
+                                      style: TextStyle(color: Colors.white));
+                                } else if (snapshot.hasData &&
+                                    snapshot.data != null) {
+                                  String userName = snapshot.data!;
+                                  return Text(
+                                    "Hi $userName!",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                } else {
+                                  return Text('Username not available',
+                                      style: TextStyle(color: Colors.white));
+                                }
+                              },
                             ),
                           ],
                         ),
