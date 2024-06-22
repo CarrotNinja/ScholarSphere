@@ -184,17 +184,7 @@ class _HomePageState extends State<HomePage> {
                       height: 25,
                     ),
 
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _userUID(),
-                        _signOutButton(),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
+                    
                   ],
                 ),
               ),

@@ -2,14 +2,15 @@ import 'package:scholar_sphere/util/edit_item.dart';
 import 'package:flutter/material.dart';
 
 class ChangeAccountScreen extends StatefulWidget {
-  const ChangeAccountScreen({super.key});
+  final String docID;
+  ChangeAccountScreen({Key? key, required this.docID}) : super(key: key);
+
 
   @override
   State<ChangeAccountScreen> createState() => _EditAccountScreenState();
 }
 
 class _EditAccountScreenState extends State<ChangeAccountScreen> {
-  String gender = "man";
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +78,8 @@ class _EditAccountScreenState extends State<ChangeAccountScreen> {
                 title: "Name",
                 widget: TextField(),
               ),
-              const SizedBox(height: 40),
-              EditItem(
+              
+              /*EditItem(
                 title: "Gender",
                 widget: Row(
                   children: [
@@ -121,12 +122,12 @@ class _EditAccountScreenState extends State<ChangeAccountScreen> {
                     )
                   ],
                 ),
-              ),
-              const SizedBox(height: 40),
+              ),*/
+              /*const SizedBox(height: 40),
               const EditItem(
                 widget: TextField(),
                 title: "Age",
-              ),
+              ),*/
               const SizedBox(height: 40),
               const EditItem(
                 widget: TextField(),
