@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class AcademicsPage extends StatefulWidget {
-  final String userId; // Add userId as a parameter
+  final String userId;
 
   AcademicsPage({Key? key, required this.userId}) : super(key: key);
 
@@ -15,13 +15,11 @@ class AcademicsPage extends StatefulWidget {
 
 class _AcademicsPageState extends State<AcademicsPage> {
   final List<Map<String, dynamic>> _transcripts = [];
-  final ImagePicker _picker = ImagePicker();
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   @override
   void initState() {
     super.initState();
-    // Call a method to fetch transcripts from Firestore when the page loads
     _fetchTranscripts();
   }
 
@@ -30,23 +28,30 @@ class _AcademicsPageState extends State<AcademicsPage> {
   }
 
   Future<void> _pickTranscript() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
 
-    if (pickedFile != null) {
+    if (result != null) {
+      File file = File(result.files.single.path!);
+
       setState(() {
         _transcripts.add({
-          'file': File(pickedFile.path),
+          'file': file,
           'text': '',
+          'grades': <String>[],
         });
       });
-      await _uploadTranscript(File(pickedFile.path));
-      await _extractText(File(pickedFile.path));
+
+      await _uploadTranscript(file);
+      await _extractTextAndGrades(file);
     }
   }
 
   Future<void> _uploadTranscript(File file) async {
     try {
-      String fileName = 'transcripts/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      String fileName = 'transcripts/${DateTime.now().millisecondsSinceEpoch}.pdf';
       Reference storageRef = _storage.ref().child(fileName);
       UploadTask uploadTask = storageRef.putFile(file);
 
@@ -60,17 +65,55 @@ class _AcademicsPageState extends State<AcademicsPage> {
     }
   }
 
-  Future<void> _extractText(File file) async {
-    final inputImage = InputImage.fromFile(file);
-    final textDetector = GoogleMlKit.vision.textRecognizer();
-    final RecognizedText recognizedText = await textDetector.processImage(inputImage);
+  Future<void> _extractTextAndGrades(File file) async {
+    try {
+      // Load the PDF document
+      final PdfDocument document = PdfDocument(inputBytes: file.readAsBytesSync());
 
-    setState(() {
-      _transcripts.last['text'] = recognizedText.text;
-    });
+      // Extract text from all the pages
+      String text = PdfTextExtractor(document).extractText();
+      document.dispose();
 
-    print('Extracted text: ${recognizedText.text}');
+      List<String> grades = _extractGrades(text);
+
+      setState(() {
+        _transcripts.last['text'] = text;
+        _transcripts.last['grades'] = grades;
+      });
+
+      print('Extracted text: $text');
+      print('Extracted grades: $grades');
+    } catch (e) {
+      print('Error extracting text: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to extract text from transcript')));
+    }
   }
+
+  List<String> _extractGrades(String text) {
+  List<String> grades = [];
+  
+  // Updated regular expression to capture complex course titles
+  RegExp gradePattern = RegExp(r'(.+?)\s+\d+\s+\d+\s+\d+\s+(\d+)\s+Self-Direction');
+
+  Iterable<RegExpMatch> matches = gradePattern.allMatches(text);
+
+  for (var match in matches) {
+    String course = match.group(1)!.trim();
+    int newlineIndex = course.lastIndexOf('\n');
+
+    if (newlineIndex != -1) {
+      course = course.substring(newlineIndex + 1);
+    }
+    
+    String grade = match.group(2)!.trim();
+    grades.add('$course: $grade');
+  }
+
+  return grades;
+}
+
+
+
 
   void _removeTranscript(int index) {
     setState(() {
@@ -125,7 +168,13 @@ class _AcademicsPageState extends State<AcademicsPage> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          subtitle: Text(item['text']),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Extracted Grades:', style: TextStyle(fontWeight: FontWeight.bold)),
+              ...item['grades'].map((grade) => Text(grade)).toList(),
+            ],
+          ),
         ),
       ),
     );
