@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
+import 'package:scholar_sphere/pages/academics_page.dart';
 import 'package:scholar_sphere/pages/awards_page.dart';
 import 'package:scholar_sphere/pages/clubs_page.dart';
 import 'package:scholar_sphere/pages/ec_page.dart';
@@ -9,6 +10,7 @@ import 'package:scholar_sphere/pages/other_page.dart';
 import 'package:scholar_sphere/util/ec_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scholar_sphere/backend/auth.dart';
+import 'package:scholar_sphere/util/profile_picture.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -96,11 +98,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Stack(
                               children: [
-                                CircleAvatar(
-                                  radius: 48,
-                                  backgroundImage: NetworkImage(
-                                      'https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AWindows_10_Default_Profile_Picture.svg&psig=AOvVaw3hdK3rOp2uuBaVKQSq4g9w&ust=1718686961239000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCLiQ34Du4YYDFQAAAAAdAAAAABBw'),
-                                )
+                                ProfilePicture(userId: docID,)
                               ],
                             ),
                             FutureBuilder<String>(
@@ -220,10 +218,19 @@ class _HomePageState extends State<HomePage> {
                           Expanded(
                             child: ListView(
                               children: [
-                                EcTile(
-                                  icon: Icons.lightbulb,
-                                  EcName: 'Academics',
-                                  color: Colors.orange,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AcademicsPage(userId: docID,)));
+                                  },
+                                  child: EcTile(
+                                    icon: Icons.lightbulb,
+                                    EcName: 'Academics',
+                                    color: Colors.orange,
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: () {

@@ -11,7 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
+
 
 
 Future<void> main() async {

@@ -1,5 +1,6 @@
 import 'package:scholar_sphere/util/edit_item.dart';
 import 'package:flutter/material.dart';
+import 'package:scholar_sphere/util/profile_picture.dart';
 
 class ChangeAccountScreen extends StatefulWidget {
   final String docID;
@@ -59,11 +60,7 @@ class _EditAccountScreenState extends State<ChangeAccountScreen> {
                 title: "Photo",
                 widget: Column(
                   children: [
-                    Image.asset(
-                      "assets/avatar.webp",
-                      height: 100,
-                      width: 100,
-                    ),
+                    ProfilePicture(userId: widget.docID),
                     TextButton(
                       onPressed: () {},
                       style: TextButton.styleFrom(

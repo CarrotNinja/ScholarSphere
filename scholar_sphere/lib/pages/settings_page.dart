@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/pages/appearance_page.dart';
+import 'package:scholar_sphere/util/profile_picture.dart';
 import 'package:scholar_sphere/util/setting_item.dart';
 import 'package:scholar_sphere/util/setting_switch.dart';
 import 'package:scholar_sphere/pages/forward_button.dart';
@@ -91,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 width: double.infinity,
                 child: Row(
                   children: [
-                    Image.asset("assets/avatar.webp", width: 70, height: 70),
+                    ProfilePicture(userId: docID),
                     const SizedBox(width: 20),
                      Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

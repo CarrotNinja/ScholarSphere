@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scholar_sphere/pages/login_screen.dart';
@@ -31,10 +33,9 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               Padding(
                   padding: const EdgeInsets.only(top: 200.0),
-                  child: Icon(
-                    Icons.logo_dev,
-                    size: 200,
-                  )),
+                  child: Image.asset("assets/Logo.png",),
+                  
+                  ),
               SizedBox(
                 height: 50,
               ),
