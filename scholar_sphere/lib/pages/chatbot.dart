@@ -10,10 +10,10 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
   List<String> _chatMessages = [];
 
   final Map<String, String> responses = {
-    "login": "To get started, please login or signup first. If you have issues with logging in or signing up, please don't hesitate to ask! We have a Forgot Password button if you face any issues with your password. Once logged in, you can explore the application, display and share your portfolio, and much more.",
-    "signup": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
+    "login": "To get started, please login or signup first. If you have issues with logging in or signing up, please don't hesitate to ask! We have a Forgot Password button if you face any issues with your password. Once logged in, you can explore the application, display and share your portfolio, and much more!",
+    "signup": "To get started, please login or signup first. If you have issues with logging in or signing up, please don't hesitate to ask! We have a Forgot Password button if you face any issues with your password. Once logged in, you can explore the application, display and share your portfolio, and much more.",
     "get started": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
-    "upload transcript": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
+    "upload transcript": "You can upload your transcripts and display your grades in Scholar Sphere. Simply navigate to the upload section and follow the instructions.",
     "grades": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
     "gpa": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
     "awards": "You can showcase your personalized awards, clubs, and extracurricular activities in your portfolio. Head over to the portfolio section to add these details.",
