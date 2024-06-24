@@ -6,64 +6,44 @@ class AdvancedChatbot extends StatefulWidget {
 }
 
 class _AdvancedChatbotState extends State<AdvancedChatbot> {
-  final List<Map<String, dynamic>> _messages = [];
-  final TextEditingController _controller = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _textController = TextEditingController();
+  List<String> _chatMessages = [];
 
-  void _sendMessage() {
-    if (_controller.text.isEmpty) return;
+  final Map<String, String> responses = {
+    "login": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
+    "signup": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
+    "get started": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
+    "upload transcript": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
+    "grades": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
+    "gpa": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
+    "awards": "You can showcase your personalized awards, clubs, and extracurricular activities in your portfolio. Head over to the portfolio section to add these details.",
+    "clubs": "You can showcase your personalized awards, clubs, and extracurricular activities in your portfolio. Head over to the portfolio section to add these details.",
+    "extracurriculars": "You can showcase your personalized awards, clubs, and extracurricular activities in your portfolio. Head over to the portfolio section to add these details.",
+    "forgot password": "If you've forgotten your password, click on the 'Forgot Password' button on the login page to reset it.",
+    "share portfolio": "You can share your portfolio with others and post it on social media. Additionally, you can save your portfolio as a specific file type.",
+    "social media": "You can share your portfolio with others and post it on social media. Additionally, you can save your portfolio as a specific file type.",
+    "save file": "You can share your portfolio with others and post it on social media. Additionally, you can save your portfolio as a specific file type.",
+    "welcome screen": "Our app features a welcome screen, a to-do list, a home page, and a settings page to help you manage and customize your experience.",
+    "to do list": "Our app features a welcome screen, a to-do list, a home page, and a settings page to help you manage and customize your experience.",
+    "home page": "Our app features a welcome screen, a to-do list, a home page, and a settings page to help you manage and customize your experience.",
+    "settings": "Our app features a welcome screen, a to-do list, a home page, and a settings page to help you manage and customize your experience.",
+    "how does the app work": "Our app allows you to create and manage your high school portfolio. You can upload your transcripts, display your grades, showcase your awards and extracurricular activities, and share your portfolio with others. Explore the app to discover more features!",
+    "app functionality": "Our app allows you to create and manage your high school portfolio. You can upload your transcripts, display your grades, showcase your awards and extracurricular activities, and share your portfolio with others. Explore the app to discover more features!",
+    "features": "Our app allows you to create and manage your high school portfolio. You can upload your transcripts, display your grades, showcase your awards and extracurricular activities, and share your portfolio with others. Explore the app to discover more features!",
+    "what can this app do": "This app helps you manage and showcase your high school portfolio. You can upload and display your grades, achievements, and extracurricular activities, share your portfolio on social media, and customize your profile with various features.",
+    "how to reset password": "If you forgot your password, you can reset it by clicking on the 'Forgot Password' button on the login page and following the instructions.",
+    "forgot my password": "If you forgot your password, you can reset it by clicking on the 'Forgot Password' button on the login page and following the instructions.",
+    "customize my profile": "To customize your profile, go to the settings page where you can update your personal information, change your profile picture, and adjust other preferences.",
+    "profile settings": "To customize your profile, go to the settings page where you can update your personal information, change your profile picture, and adjust other preferences."
+  };
+
+  void _handleSubmitted(String message) {
     setState(() {
-      _messages.add({
-        'data': 1,
-        'message': _controller.text,
-      });
+      _chatMessages.add("User: $message");
+      String response = responses[message.toLowerCase().trim()]!;
+      _chatMessages.add("Bot: $response");
     });
-
-    // Simulate a chatbot response
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        _messages.add({
-          'data': 0,
-          'message': _generateResponse(_controller.text),
-        });
-        _scrollToBottom();
-      });
-    });
-
-    _controller.clear();
-    _scrollToBottom();
-  }
-
-  void _scrollToBottom() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
-  String _generateResponse(String input) {
-    // Response generation logic for a high school portfolio app
-    String lowerInput = input.toLowerCase();
-    if (lowerInput.contains("login") || lowerInput.contains("signup") || lowerInput.contains("get started")) {
-      return "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.";
-    } else if (lowerInput.contains("upload transcript") || lowerInput.contains("grades") || lowerInput.contains("gpa")) {
-      return "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.";
-    } else if (lowerInput.contains("awards") || lowerInput.contains("clubs") || lowerInput.contains("extracurriculars")) {
-      return "You can showcase your personalized awards, clubs, and extracurricular activities in your portfolio. Head over to the portfolio section to add these details.";
-    } else if (lowerInput.contains("forgot password")) {
-      return "If you've forgotten your password, click on the 'Forgot Password' button on the login page to reset it.";
-    } else if (lowerInput.contains("share portfolio") || lowerInput.contains("social media") || lowerInput.contains("save file")) {
-      return "You can share your portfolio with others and post it on social media. Additionally, you can save your portfolio as a specific file type.";
-    } else if (lowerInput.contains("welcome screen") || lowerInput.contains("to do list") || lowerInput.contains("home page") || lowerInput.contains("settings")) {
-      return "Our app features a welcome screen, a to-do list, a home page, and a settings page to help you manage and customize your experience.";
-    } else {
-      return "I'm not sure how to respond to that. Please ask a question related to the high school portfolio app.";
-    }
+    _textController.clear();
   }
 
   @override
@@ -71,17 +51,37 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Scholar Sphere Chatbot'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: _messages.length,
-              itemBuilder: (context, index) => ChatMessage(
-                data: _messages[index]['data'],
-                message: _messages[index]['message'],
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.purple[100]!, Colors.purple[50]!],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: ListView.builder(
+                itemCount: _chatMessages.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                    padding: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: index % 2 == 0 ? Colors.orange[100] : Colors.purple[100],
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Text(
+                      _chatMessages[index],
+                      style: TextStyle(
+                        color: index % 2 == 0 ? Colors.orange[900] : Colors.purple[900],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -91,19 +91,25 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: _controller,
+                    controller: _textController,
                     decoration: InputDecoration(
-                      hintText: "Enter a message",
-                      border: OutlineInputBorder(),
+                      hintText: 'Type your message...',
                       filled: true,
                       fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                     ),
+                    onSubmitted: _handleSubmitted,
                   ),
                 ),
+                SizedBox(width: 8.0),
                 IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: _sendMessage,
-                  color: Colors.deepPurple,
+                  color: Theme.of(context).colorScheme.secondary,
+                  onPressed: () {
+                    _handleSubmitted(_textController.text);
+                  },
                 ),
               ],
             ),
@@ -113,39 +119,3 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
     );
   }
 }
-
-class ChatMessage extends StatelessWidget {
-  final int data;
-  final String message;
-
-  ChatMessage({required this.data, required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: data == 1 ? MainAxisAlignment.end : MainAxisAlignment.start,
-        children: [
-          Flexible( // Added Flexible widget to ensure text wrapping
-            child: Container(
-              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7), // Limit width to 70% of screen width
-              decoration: BoxDecoration(
-                color: data == 1 ? Colors.orange : Colors.deepPurpleAccent,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                message,
-                style: TextStyle(color: Colors.white),
-                overflow: TextOverflow.visible, // Handle overflow by wrapping
-                maxLines: null, // Allow unlimited lines
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
