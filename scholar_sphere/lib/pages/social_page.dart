@@ -3,10 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
 import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
+import 'package:scholar_sphere/backend/save_and_open_pdf.dart';
+import 'package:scholar_sphere/backend/simple_pdf_api.dart';
 import 'package:scholar_sphere/util/profile_picture.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
+import 'package:open_file/open_file.dart';
+import 'dart:io';
 
 class SocialPage extends StatefulWidget {
   const SocialPage({super.key});
@@ -16,19 +23,18 @@ class SocialPage extends StatefulWidget {
 }
 
 class _SocialPageState extends State<SocialPage> {
-  int myIndex = 1; // Assuming this page is the second tab
   final User? user = Auth().currentUser;
   String docID = "";
   var now = DateTime.now();
   var formatter = DateFormat.yMMMMd('en_US');
   String? formattedDate;
+
   @override
   void initState() {
     super.initState();
     formattedDate = formatter.format(now);
     fetchDocID();
   }
-  
 
   Future<void> fetchDocID() async {
     var user = FirebaseAuth.instance.currentUser;
@@ -126,10 +132,11 @@ class _SocialPageState extends State<SocialPage> {
       }
     });
     portfolioData.writeln('\n');
-    
 
     return portfolioData.toString();
   }
+
+
 
   void sharePortfolio() async {
     String portfolioData = await fetchPortfolioData();
@@ -278,27 +285,23 @@ class _SocialPageState extends State<SocialPage> {
                               Icon(Icons.more_horiz),
                             ],
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          // Share button
-                          ElevatedButton(
-                            onPressed: sharePortfolio,
-                            child: Text('Share Portfolio'),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          // Placeholder for social features
+                          SizedBox(height: 25),
+                          // Content
                           Expanded(
-                            child: Center(
-                              child: Text(
-                                'Social features will be here',
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 18,
+                            child: ListView(
+                              children: [
+                                TextButton(
+                                  onPressed: () async{
+                                    final SimplePdfFile = await SimplePdfApi.generateSimpleTextPdf('This is a test', 'A very good test!');
+                                    SaveAndOpenDocument.openPdf(SimplePdfFile);
+                                  },
+                                  child: Text('Generate PDF'),
                                 ),
-                              ),
+                                TextButton(
+                                  onPressed: sharePortfolio,
+                                  child: Text('Share Portfolio'),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -306,7 +309,7 @@ class _SocialPageState extends State<SocialPage> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
