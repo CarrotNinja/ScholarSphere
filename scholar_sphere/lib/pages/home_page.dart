@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                                   return Text('Loading...',
                                       style: TextStyle(color: Colors.white));
                                 } else if (snapshot.hasError) {
-                                  print(snapshot.error);
+                                  print("HERE IS WHAT IM LOOKING FOR" +snapshot.error.toString());
                                   return Text('Error',
                                       style: TextStyle(color: Colors.white));
                                 } else if (snapshot.hasData &&

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -16,6 +17,7 @@ class AcademicsPage extends StatefulWidget {
 class _AcademicsPageState extends State<AcademicsPage> {
   final List<Map<String, dynamic>> _transcripts = [];
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -24,7 +26,21 @@ class _AcademicsPageState extends State<AcademicsPage> {
   }
 
   void _fetchTranscripts() {
-    // Fetch transcripts from Firebase Storage or Firestore (not implemented here)
+    // Fetch transcripts from Firestore
+    _firestore.collection('users').doc(widget.userId).collection('transcripts').get().then((querySnapshot) {
+      setState(() {
+        _transcripts.clear(); // Clear existing items
+        querySnapshot.docs.forEach((doc) {
+          _transcripts.add({
+            'fileName': doc['fileName'],
+            'grades': List<String>.from(doc['grades']),
+          });
+        });
+      });
+    }).catchError((error) {
+      print("Error fetching transcripts: $error");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to fetch transcripts')));
+    });
   }
 
   Future<void> _pickTranscript() async {
@@ -83,37 +99,47 @@ class _AcademicsPageState extends State<AcademicsPage> {
 
       print('Extracted text: $text');
       print('Extracted grades: $grades');
+
+      await _saveGradesToFirestore(file.path.split('/').last, grades);
     } catch (e) {
       print('Error extracting text: $e');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to extract text from transcript')));
     }
   }
 
-  List<String> _extractGrades(String text) {
-  List<String> grades = [];
-  
-  // Updated regular expression to capture complex course titles
-  RegExp gradePattern = RegExp(r'(.+?)\s+\d+\s+\d+\s+\d+\s+(\d+)\s+Self-Direction');
-
-  Iterable<RegExpMatch> matches = gradePattern.allMatches(text);
-
-  for (var match in matches) {
-    String course = match.group(1)!.trim();
-    int newlineIndex = course.lastIndexOf('\n');
-
-    if (newlineIndex != -1) {
-      course = course.substring(newlineIndex + 1);
+  Future<void> _saveGradesToFirestore(String fileName, List<String> grades) async {
+    try {
+      await _firestore.collection('users').doc(widget.userId).collection('transcripts').add({
+        'fileName': fileName,
+        'grades': grades,
+      });
+    } catch (e) {
+      print('Error saving grades to Firestore: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save grades')));
     }
-    
-    String grade = match.group(2)!.trim();
-    grades.add('$course: $grade');
   }
 
-  return grades;
-}
+  List<String> _extractGrades(String text) {
+    List<String> grades = [];
+    // Updated regular expression to capture complex course titles
+    RegExp gradePattern = RegExp(r'(.+?)\s+\d+\s+\d+\s+\d+\s+(\d+)\s+Self-Direction');
 
+    Iterable<RegExpMatch> matches = gradePattern.allMatches(text);
 
+    for (var match in matches) {
+      String course = match.group(1)!.trim();
+      int newlineIndex = course.lastIndexOf('\n');
 
+      if (newlineIndex != -1) {
+        course = course.substring(newlineIndex + 1);
+      }
+
+      String grade = match.group(2)!.trim();
+      grades.add('$course: $grade');
+    }
+
+    return grades;
+  }
 
   void _removeTranscript(int index) {
     setState(() {
@@ -143,7 +169,7 @@ class _AcademicsPageState extends State<AcademicsPage> {
 
   Widget _buildItem(Map<String, dynamic> item, int index) {
     return Dismissible(
-      key: Key(item['file'].path),
+      key: Key(item['fileName'] ?? item['file'].path),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         _removeTranscript(index);
@@ -162,7 +188,7 @@ class _AcademicsPageState extends State<AcademicsPage> {
         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: ListTile(
           title: Text(
-            item['file'].path.split('/').last,
+            item['fileName'] ?? item['file'].path.split('/').last,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,

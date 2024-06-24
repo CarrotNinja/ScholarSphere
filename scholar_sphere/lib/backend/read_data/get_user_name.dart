@@ -12,7 +12,7 @@ class GetUserName {
     
     if (snapshot.exists) {
       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-      return data['first name'];
+      return data['first_name'];
     } else {
       throw Exception('User not found'); // or handle accordingly
     }

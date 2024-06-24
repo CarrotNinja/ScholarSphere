@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "1064840693292",
-    "project_id": "scholar-sphere-fbla",
-    "storage_bucket": "scholar-sphere-fbla.appspot.com"
+    "project_number": "575192445378",
+    "project_id": "scholar-sphere-fbla-new",
+    "storage_bucket": "scholar-sphere-fbla-new.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1064840693292:android:f92c99ca36bd2fa0293389",
-        "android_client_info": {
-          "package_name": "com.example.scholarSphere"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAOLdYu362nvlso-YObV8Z-S9fdIRnhWwI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1064840693292:android:39b1b0f7ae483f46293389",
+        "mobilesdk_app_id": "1:575192445378:android:36cef32f59771178a2265b",
         "android_client_info": {
           "package_name": "com.example.scholar_sphere"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAOLdYu362nvlso-YObV8Z-S9fdIRnhWwI"
+          "current_key": "AIzaSyAfZzd91nHJwDWBKKPfgje28l29thCB20w"
         }
       ],
       "services": {

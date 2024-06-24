@@ -26,7 +26,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -50,19 +53,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAOLdYu362nvlso-YObV8Z-S9fdIRnhWwI',
-    appId: '1:1064840693292:android:f92c99ca36bd2fa0293389',
-    messagingSenderId: '1064840693292',
-    projectId: 'scholar-sphere-fbla',
-    storageBucket: 'scholar-sphere-fbla.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCdgKz3MFc9KYkotXw2dRMWb890xOye8kk',
-    appId: '1:1064840693292:ios:ab418fef49df9672293389',
-    messagingSenderId: '1064840693292',
-    projectId: 'scholar-sphere-fbla',
-    storageBucket: 'scholar-sphere-fbla.appspot.com',
-    iosBundleId: 'com.example.scholarSphere',
+    apiKey: 'AIzaSyAfZzd91nHJwDWBKKPfgje28l29thCB20w',
+    appId: '1:575192445378:android:36cef32f59771178a2265b',
+    messagingSenderId: '575192445378',
+    projectId: 'scholar-sphere-fbla-new',
+    storageBucket: 'scholar-sphere-fbla-new.appspot.com',
   );
 }
