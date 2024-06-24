@@ -10,7 +10,7 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
   List<String> _chatMessages = [];
 
   final Map<String, String> responses = {
-    "login": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
+    "login": "To get started, please login or signup first. If you have issues with logging in or signing up, please don't hesitate to ask! We have a Forgot Password button if you face any issues with your password. Once logged in, you can explore the application, display and share your portfolio, and much more.",
     "signup": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
     "get started": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
     "upload transcript": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
@@ -59,7 +59,7 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.purple[100]!, Colors.purple[50]!],
+                  colors: [Color.fromARGB(255, 255, 255, 255)!, const Color.fromARGB(255, 255, 255, 255)!],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -71,7 +71,7 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
                     margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
                     padding: EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      color: index % 2 == 0 ? Colors.orange[100] : Colors.purple[100],
+                      color: index % 2 == 0 ? Color.fromARGB(255, 255, 193, 101) : Color.fromARGB(255, 87, 255, 252),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Text(
