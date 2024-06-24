@@ -5,6 +5,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:scholar_sphere/backend/auth.dart';
+import 'package:scholar_sphere/backend/paragraph_pdf_api.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/backend/save_and_open_pdf.dart';
 import 'package:scholar_sphere/backend/simple_pdf_api.dart';
@@ -292,8 +293,8 @@ class _SocialPageState extends State<SocialPage> {
                               children: [
                                 TextButton(
                                   onPressed: () async{
-                                    final SimplePdfFile = await SimplePdfApi.generateSimpleTextPdf('This is a test', 'A very good test!');
-                                    SaveAndOpenDocument.openPdf(SimplePdfFile);
+                                    final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf();
+                                    SaveAndOpenDocument.openPdf(paragraphPdf);
                                   },
                                   child: Text('Generate PDF'),
                                 ),
