@@ -109,9 +109,14 @@ class _TodoListState extends State<ToDoList1> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurple, Colors.deepPurpleAccent],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.3, 0.6, 0.9],
+            colors: [
+              Color(0xff56018D),
+              Color(0xff8B139C),
+              Colors.pink,
+            ],
           ),
         ),
         child: Padding(

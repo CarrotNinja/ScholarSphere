@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/util/profile_picture.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SocialPage extends StatefulWidget {
   const SocialPage({super.key});
@@ -15,15 +17,18 @@ class SocialPage extends StatefulWidget {
 
 class _SocialPageState extends State<SocialPage> {
   int myIndex = 1; // Assuming this page is the second tab
-   final User? user = Auth().currentUser;
-
+  final User? user = Auth().currentUser;
   String docID = "";
-
+  var now = DateTime.now();
+  var formatter = DateFormat.yMMMMd('en_US');
+  String? formattedDate;
   @override
   void initState() {
     super.initState();
+    formattedDate = formatter.format(now);
     fetchDocID();
   }
+  
 
   Future<void> fetchDocID() async {
     var user = FirebaseAuth.instance.currentUser;
@@ -51,10 +56,89 @@ class _SocialPageState extends State<SocialPage> {
     }
   }
 
+  Future<String> fetchPortfolioData() async {
+    String userId = docID;
+    StringBuffer portfolioData = StringBuffer();
+    portfolioData.write("Check Out My Scholar Sphere Portfolio!\n");
+    // Fetch transcripts
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('transcripts')
+        .get()
+        .then((querySnapshot) {
+      portfolioData.writeln('Semester Report Cards:');
+      for (var doc in querySnapshot.docs) {
+        List<String> grades = List<String>.from(doc['grades']);
+        portfolioData.writeln('\n ${doc['fileName']}: ${grades.join('\n')}');
+      }
+    });
+    portfolioData.writeln('\n');
+    // Fetch awards
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('awards')
+        .get()
+        .then((querySnapshot) {
+      portfolioData.writeln('Awards:');
+      for (var doc in querySnapshot.docs) {
+        portfolioData.writeln(' - ${doc['task']}');
+      }
+    });
+    portfolioData.writeln('\n');
+    // Fetch extracurriculars (Ecs)
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('Ecs')
+        .get()
+        .then((querySnapshot) {
+      portfolioData.writeln('Extracurriculars:');
+      for (var doc in querySnapshot.docs) {
+        portfolioData.writeln(' - ${doc['task']}');
+      }
+    });
+    portfolioData.writeln('\n');
+    // Fetch clubs
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('Clubs')
+        .get()
+        .then((querySnapshot) {
+      portfolioData.writeln('Clubs:');
+      for (var doc in querySnapshot.docs) {
+        portfolioData.writeln(' - ${doc['task']}');
+      }
+    });
+    portfolioData.writeln('\n');
+    // Fetch others
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('Others')
+        .get()
+        .then((querySnapshot) {
+      portfolioData.writeln('Other:');
+      for (var doc in querySnapshot.docs) {
+        portfolioData.writeln(' - ${doc['task']}');
+      }
+    });
+    portfolioData.writeln('\n');
+    
+
+    return portfolioData.toString();
+  }
+
+  void sharePortfolio() async {
+    String portfolioData = await fetchPortfolioData();
+    await Share.share(portfolioData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -136,7 +220,7 @@ class _SocialPageState extends State<SocialPage> {
                               height: 45,
                             ),
                             Text(
-                              '8 June, 2024',
+                              formattedDate!,
                               style: TextStyle(
                                   color: Colors.blue[200], fontSize: 20),
                             )
@@ -193,6 +277,14 @@ class _SocialPageState extends State<SocialPage> {
                               ),
                               Icon(Icons.more_horiz),
                             ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          // Share button
+                          ElevatedButton(
+                            onPressed: sharePortfolio,
+                            child: Text('Share Portfolio'),
                           ),
                           SizedBox(
                             height: 20,

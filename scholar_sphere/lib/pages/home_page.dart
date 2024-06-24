@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/pages/academics_page.dart';
 import 'package:scholar_sphere/pages/awards_page.dart';
@@ -22,12 +23,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int myIndex = 0;
   final User? user = Auth().currentUser;
+  var now = DateTime.now();
+  var formatter = DateFormat.yMMMMd('en_US');
+  String? formattedDate;
+
 
   String docID = "";
 
   @override
   void initState() {
     super.initState();
+    formattedDate = formatter.format(now);
     fetchDocID();
   }
 
@@ -110,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                                   return Text('Loading...',
                                       style: TextStyle(color: Colors.white));
                                 } else if (snapshot.hasError) {
-                                  print("HERE IS WHAT IM LOOKING FOR" +snapshot.error.toString());
+                                  print(snapshot.error.toString());
                                   return Text('Error',
                                       style: TextStyle(color: Colors.white));
                                 } else if (snapshot.hasData &&
@@ -150,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                               height: 45,
                             ),
                             Text(
-                              '8 June, 2024',
+                              formattedDate!,
                               style: TextStyle(
                                   color: Colors.blue[200], fontSize: 20),
                             )

@@ -127,15 +127,20 @@ class ChatMessage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: data == 1 ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: data == 1 ? Colors.orange : Colors.deepPurpleAccent,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-              message,
-              style: TextStyle(color: Colors.white),
+          Flexible( // Added Flexible widget to ensure text wrapping
+            child: Container(
+              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7), // Limit width to 70% of screen width
+              decoration: BoxDecoration(
+                color: data == 1 ? Colors.orange : Colors.deepPurpleAccent,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                message,
+                style: TextStyle(color: Colors.white),
+                overflow: TextOverflow.visible, // Handle overflow by wrapping
+                maxLines: null, // Allow unlimited lines
+              ),
             ),
           ),
         ],
@@ -143,3 +148,4 @@ class ChatMessage extends StatelessWidget {
     );
   }
 }
+
