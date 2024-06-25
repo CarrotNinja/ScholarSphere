@@ -293,7 +293,7 @@ class _SocialPageState extends State<SocialPage> {
                               children: [
                                 TextButton(
                                   onPressed: () async{
-                                    final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf();
+                                    final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
                                     SaveAndOpenDocument.openPdf(paragraphPdf);
                                   },
                                   child: Text('Generate PDF'),
