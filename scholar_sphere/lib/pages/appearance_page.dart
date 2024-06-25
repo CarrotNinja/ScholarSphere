@@ -1,26 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AppearancePage extends StatefulWidget {
+  final String userId;
+  AppearancePage({Key? key, required this.userId}) : super(key: key);
+
   @override
   _AppearancePageState createState() => _AppearancePageState();
 }
 
 class _AppearancePageState extends State<AppearancePage> {
   List<List<Color>> gradients = [
-    [Colors.purple, Colors.pink],
+    [Color(0xff56018D), Colors.pink],
     [Colors.blue, Colors.green],
     [Colors.red, Colors.orange],
     [Colors.yellow, Colors.green],
     [Colors.teal, Colors.cyan],
   ];
 
-  List<Color> selectedGradient = [Colors.purple, Colors.pink];
+  List<Color> selectedGradient = [Color(0xff56018D), Colors.pink];
 
   @override
   void initState() {
     super.initState();
-    // Set the first gradient as selected by default
-    selectedGradient = gradients[0];
+    _loadSelectedGradient();
+  }
+
+  Future<void> _loadSelectedGradient() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .get();
+
+    if (doc.exists) {
+      final data = doc.data();
+      if (data != null && data.containsKey('appearance')) {
+        final colors = List<Color>.from((data['appearance'] as List<dynamic>)
+            .map((color) => Color(color)));
+        setState(() {
+          selectedGradient = colors;
+        });
+      }
+    }
+  }
+
+  Future<void> _saveSelectedGradient() async {
+    final colors = selectedGradient.map((color) => color.value).toList();
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .set({
+      'appearance': colors,
+    }, SetOptions(merge: true));
   }
 
   @override
@@ -59,6 +90,7 @@ class _AppearancePageState extends State<AppearancePage> {
                       onTap: () {
                         setState(() {
                           selectedGradient = gradients[index];
+                          _saveSelectedGradient();
                         });
                       },
                       child: Container(

@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
+import 'package:flutter/services.dart';
 import 'dart:io';
 
 class SocialPage extends StatefulWidget {
@@ -62,6 +63,58 @@ class _SocialPageState extends State<SocialPage> {
       });
     }
   }
+
+  Future<void> sharePdfLink() async {
+    final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
+    final pdfFileName = 'ScholarSpherePortfolio.pdf';
+    final downloadUrl = await SaveAndOpenDocument.uploadPdfAndGetLink(paragraphPdf, pdfFileName);
+
+    if (downloadUrl != null) {
+      SaveAndOpenDocument.copyToClipboard(downloadUrl);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('PDF link copied to clipboard!')),
+      );
+      print('Download URL: $downloadUrl');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to upload PDF')),
+      );
+    }
+  }
+
+  Future<void> shareToInstagramStory() async {
+    final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
+    final pdfFileName = 'ScholarSpherePortfolio.pdf';
+    final downloadUrl = await SaveAndOpenDocument.uploadPdfAndGetLink(paragraphPdf, pdfFileName);
+
+    if (downloadUrl != null) {
+      SaveAndOpenDocument.copyToClipboard(downloadUrl);
+      final imagePath = 'assets/Scholar_Sphere_Insta.png';
+
+      try {
+        final directory = await getApplicationDocumentsDirectory();
+        final imageFile = File('${directory.path}/Scholar_Sphere_Insta.png');
+        await imageFile.writeAsBytes((await rootBundle.load(imagePath)).buffer.asUint8List());
+
+        final xFile = XFile(imageFile.path);
+
+        await Share.shareXFiles([xFile], text: downloadUrl);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Image shared to Instagram story!')),
+        );
+      } catch (e) {
+        print('Error sharing to Instagram: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to share to Instagram story')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to upload PDF')),
+      );
+    }
+  }
+
   Future<String> fetchPortfolioData() async {
     String userId = docID;
     StringBuffer portfolioData = StringBuffer();
@@ -141,24 +194,6 @@ class _SocialPageState extends State<SocialPage> {
     await Share.share(portfolioData);
   }
 
-
-  Future<void> sharePdfLink() async {
-    final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
-    final pdfFileName = 'ScholarSpherePortfolio.pdf';
-    final downloadUrl = await SaveAndOpenDocument.uploadPdfAndGetLink(paragraphPdf, pdfFileName);
-
-    if (downloadUrl != null) {
-      SaveAndOpenDocument.copyToClipboard(downloadUrl);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('PDF link copied to clipboard!')),
-      );
-      print('Download URL: $downloadUrl');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to upload PDF')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -322,6 +357,10 @@ class _SocialPageState extends State<SocialPage> {
                                   onPressed: sharePortfolio,
                                   child: Text('Share Portfolio Text'),
                                 ),
+                                TextButton(
+                                  onPressed: shareToInstagramStory,
+                                  child: Text('Share to Instagram Story'),
+                                ),
                               ],
                             ),
                           ),
@@ -338,4 +377,7 @@ class _SocialPageState extends State<SocialPage> {
     );
   }
 }
+
+
+
 

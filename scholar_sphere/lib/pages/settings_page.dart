@@ -182,7 +182,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AppearancePage()),
+                    MaterialPageRoute(builder: (context) => AppearancePage(userId: docID,)),
                   );
                 },
               ),

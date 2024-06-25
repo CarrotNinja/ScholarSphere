@@ -1,13 +1,23 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scholar_sphere/backend/auth.dart';
+import 'package:scholar_sphere/main.dart';
 import 'package:scholar_sphere/pages/login_screen.dart';
 import 'package:scholar_sphere/pages/register_screen.dart';
+import 'package:scholar_sphere/util/square_tile.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  String? errorMessage;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,8 +109,58 @@ class WelcomeScreen extends StatelessWidget {
                 'Login with Social Media',
                 style: TextStyle(fontSize: 17, color: Colors.white),
               ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:  [
+                  // google button
+                  GestureDetector(
+                    child: SquareTile(imagePath: 'assets/google.png'),
+                    onTap: signInWithGoogle,  
+                  ),
+
+                  SizedBox(width: 25),
+
+                  // apple button
+                  SquareTile(imagePath: 'assets/apple.png'),
+
+                   SizedBox(width: 25),
+
+                  // apple button
+                  SquareTile(imagePath: 'assets/facebook.png')
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
             ],
           )),
     );
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      await Auth().signInWithGoogle();
+       Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => MyApp()));
+    } on FirebaseAuthException catch(e){
+      setState(() {
+        errorMessage = e.message;
+      });
+      showErrorMessage(errorMessage!);
+    }
+  }
+  void showErrorMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return  AlertDialog(
+            title: Text(message,
+              style: TextStyle(color: Colors.black),
+            ),
+          );
+        });
   }
 }
