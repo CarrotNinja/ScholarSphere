@@ -34,7 +34,7 @@ class CustomNavBar extends StatelessWidget {
               text: "Social",
             ),
             GButton(icon:Icons.note_alt,text: "To-Do",),
-            GButton(icon: Icons.chat,text: "Chat Bot",),
+            GButton(icon: Icons.school_sharp,text: "Scores",),
             GButton(
               icon: Icons.settings,
               text: "Settings",

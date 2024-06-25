@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scholar_sphere/pages/chatbot.dart';
+import 'package:scholar_sphere/pages/scholarships.dart';
 import 'package:scholar_sphere/pages/to_do.dart';
 import 'package:scholar_sphere/util/custom_nav_bar.dart';
 import 'package:scholar_sphere/pages/home_page.dart';
@@ -20,7 +21,7 @@ class _HomePageWithNavState extends State<HomePageWithNav> {
     HomePage(),
     SocialPage(),
     ToDoList1(),
-    AdvancedChatbot(),
+    ScholarshipScreen(),
     SettingsPage(),
   ];
 

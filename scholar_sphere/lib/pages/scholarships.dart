@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 
 
@@ -62,8 +64,8 @@ class _ScholarshipScreenState extends State<ScholarshipFinder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scholar Sphere Scholarship Finder'),
-        backgroundColor: Colors.deepPurple[900],
+        title: Text('Scholar Sphere Scholarship Finder',style: TextStyle(fontWeight: FontWeight.bold),),
+        backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -111,21 +113,15 @@ class _ScholarshipScreenState extends State<ScholarshipFinder> {
               ),
             ),
             SizedBox(height: 16),
-            Text(
-              _result,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Back'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple, // Button background color
-                foregroundColor: Colors.white, // Button text color
+            InkWell(
+              onTap: ()async => await launchUrlString('https://www.princetonreview.com/college-advice/sat-act-scores-merit-scholarships'),
+              child: Text(
+                _result,
+                style: TextStyle(fontSize: 16),
               ),
             ),
+            
+            
           ],
         ),
       ),

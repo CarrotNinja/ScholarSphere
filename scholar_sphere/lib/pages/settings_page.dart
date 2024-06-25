@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/pages/appearance_page.dart';
+import 'package:scholar_sphere/pages/chatbot.dart';
 import 'package:scholar_sphere/util/profile_picture.dart';
 import 'package:scholar_sphere/util/setting_item.dart';
 import 'package:scholar_sphere/util/setting_switch.dart';
@@ -164,7 +165,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icons.help,
                 bgColor: Colors.red.shade100,
                 iconColor: Colors.red,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AdvancedChatbot()),
+                  );
+                },
               ),
               
               const SizedBox(height: 20),
