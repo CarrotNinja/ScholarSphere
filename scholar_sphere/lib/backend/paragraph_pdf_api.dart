@@ -49,10 +49,13 @@ class ParagraphPdfApi {
           children: [
             pw.PdfLogo(),
             pw.SizedBox(width: 0.5 * PdfPageFormat.cm),
-            pw.Text(
+
+pw.Text(
               'Scholar Sphere Portfolio',
-              style: pw.TextStyle(fontSize: 50, color: PdfColors.blue, fontWeight: pw.FontWeight.bold),
+              style: pw.TextStyle(fontSize: 40, color: PdfColors.blue, fontWeight: pw.FontWeight.bold),
+
             ),
+            
           ],
         ),
       );
@@ -60,7 +63,7 @@ class ParagraphPdfApi {
   static pw.Widget customHeadline(String str) => pw.Header(
         child: pw.Text(
           str,
-          style: pw.TextStyle(fontSize: 50, fontWeight: pw.FontWeight.bold, color: PdfColors.white),
+          style: pw.TextStyle(fontSize: 30, fontWeight: pw.FontWeight.bold, color: PdfColors.white),
         ),
         padding: const pw.EdgeInsets.all(8.0),
         decoration: const pw.BoxDecoration(color: PdfColors.red),
@@ -81,7 +84,7 @@ class ParagraphPdfApi {
       children: points
           .map((point) => pw.Bullet(
                 text: point,
-                style: pw.TextStyle(fontSize: 30, fontWeight: pw.FontWeight.bold),
+                style: pw.TextStyle(fontSize: 15, fontWeight: pw.FontWeight.bold),
               ))
           .toList(),
     );
@@ -96,10 +99,10 @@ class ParagraphPdfApi {
         return pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text(fileName, style: pw.TextStyle(fontSize: 30, fontWeight: pw.FontWeight.bold)),
+            pw.Text(fileName, style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
             ...grades.map((grade) => pw.Bullet(
                   text: grade,
-                  style: pw.TextStyle(fontSize: 24),
+                  style: pw.TextStyle(fontSize: 15),
                 )),
           ],
         );

@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/backend/paragraph_pdf_api.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/backend/save_and_open_pdf.dart';
-import 'package:scholar_sphere/backend/simple_pdf_api.dart';
 import 'package:scholar_sphere/util/profile_picture.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -62,7 +62,6 @@ class _SocialPageState extends State<SocialPage> {
       });
     }
   }
-
   Future<String> fetchPortfolioData() async {
     String userId = docID;
     StringBuffer portfolioData = StringBuffer();
@@ -137,11 +136,28 @@ class _SocialPageState extends State<SocialPage> {
     return portfolioData.toString();
   }
 
-
-
   void sharePortfolio() async {
     String portfolioData = await fetchPortfolioData();
     await Share.share(portfolioData);
+  }
+
+
+  Future<void> sharePdfLink() async {
+    final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
+    final pdfFileName = 'ScholarSpherePortfolio.pdf';
+    final downloadUrl = await SaveAndOpenDocument.uploadPdfAndGetLink(paragraphPdf, pdfFileName);
+
+    if (downloadUrl != null) {
+      SaveAndOpenDocument.copyToClipboard(downloadUrl);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('PDF link copied to clipboard!')),
+      );
+      print('Download URL: $downloadUrl');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to upload PDF')),
+      );
+    }
   }
 
   @override
@@ -292,15 +308,19 @@ class _SocialPageState extends State<SocialPage> {
                             child: ListView(
                               children: [
                                 TextButton(
-                                  onPressed: () async{
+                                  onPressed: () async {
                                     final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
                                     SaveAndOpenDocument.openPdf(paragraphPdf);
                                   },
                                   child: Text('Generate PDF'),
                                 ),
                                 TextButton(
+                                  onPressed: sharePdfLink,
+                                  child: Text('Share PDF Link'),
+                                ),
+                                TextButton(
                                   onPressed: sharePortfolio,
-                                  child: Text('Share Portfolio'),
+                                  child: Text('Share Portfolio Text'),
                                 ),
                               ],
                             ),
@@ -318,3 +338,4 @@ class _SocialPageState extends State<SocialPage> {
     );
   }
 }
+
