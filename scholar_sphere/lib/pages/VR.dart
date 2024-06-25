@@ -24,7 +24,7 @@ class _VRTourScreenState extends State<VRTourScreen> {
     {'name': 'North Park University', 'link': 'https://www.youtube.com/watch?v=sCRVn4nFvq4'},
     {'name': 'North Idaho College', 'link': 'https://www.youtube.com/watch?v=cuW9aFP98BQ'},
     {'name': 'University of St. Thomas', 'link': 'https://www.youtube.com/watch?v=nvYV2EeB5Jc'},
-    {'name': 'Texas A&M', 'link': 'https://www.youtube.com/watch?v=ojjDIduvN4c'},
+    {'name': 'Texas A&M University', 'link': 'https://www.youtube.com/watch?v=ojjDIduvN4c'},
     {'name': 'Santa Clara University', 'link': 'https://www.youtube.com/watch?v=uQSMSLolz2A'},
     {'name': 'UGA', 'link': 'https://www.youtube.com/watch?v=h1g5mTi4pPA'},
     {'name': 'Oxford', 'link': 'https://www.youtube.com/watch?v=qUwmb5lyvYQ'},
