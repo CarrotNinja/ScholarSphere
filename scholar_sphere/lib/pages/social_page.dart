@@ -9,6 +9,7 @@ import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/backend/paragraph_pdf_api.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/backend/save_and_open_pdf.dart';
+import 'package:scholar_sphere/util/gradient_service.dart';
 import 'package:scholar_sphere/util/profile_picture.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -67,7 +68,8 @@ class _SocialPageState extends State<SocialPage> {
   Future<void> sharePdfLink() async {
     final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
     final pdfFileName = 'ScholarSpherePortfolio.pdf';
-    final downloadUrl = await SaveAndOpenDocument.uploadPdfAndGetLink(paragraphPdf, pdfFileName);
+    final downloadUrl = await SaveAndOpenDocument.uploadPdfAndGetLink(
+        paragraphPdf, pdfFileName);
 
     if (downloadUrl != null) {
       SaveAndOpenDocument.copyToClipboard(downloadUrl);
@@ -85,7 +87,8 @@ class _SocialPageState extends State<SocialPage> {
   Future<void> shareToInstagramStory() async {
     final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
     final pdfFileName = 'ScholarSpherePortfolio.pdf';
-    final downloadUrl = await SaveAndOpenDocument.uploadPdfAndGetLink(paragraphPdf, pdfFileName);
+    final downloadUrl = await SaveAndOpenDocument.uploadPdfAndGetLink(
+        paragraphPdf, pdfFileName);
 
     if (downloadUrl != null) {
       SaveAndOpenDocument.copyToClipboard(downloadUrl);
@@ -94,7 +97,8 @@ class _SocialPageState extends State<SocialPage> {
       try {
         final directory = await getApplicationDocumentsDirectory();
         final imageFile = File('${directory.path}/Scholar_Sphere_Insta.png');
-        await imageFile.writeAsBytes((await rootBundle.load(imagePath)).buffer.asUint8List());
+        await imageFile.writeAsBytes(
+            (await rootBundle.load(imagePath)).buffer.asUint8List());
 
         final xFile = XFile(imageFile.path);
 
@@ -194,190 +198,202 @@ class _SocialPageState extends State<SocialPage> {
     await Share.share(portfolioData);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color(0xff56018D),
-              Colors.pink,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Greetings row
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      body: StreamBuilder<LinearGradient>(
+          stream: docID.isNotEmpty
+              ? GradientService(userId: docID).getGradientStream()
+              : Stream.value(LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Color(0xff56018D), Colors.pink],
+                )),
+          builder: (context, snapshot) {
+            final gradient = snapshot.data ??
+              LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0xff56018D), Colors.pink],
+              );
+            return Container(
+              decoration: BoxDecoration(
+                gradient: gradient,
+              ),
+              child: SafeArea(
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Hi name
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
+                    // Greetings row
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Hi name
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      ProfilePicture(userId: docID),
+                                    ],
+                                  ),
+                                  FutureBuilder<String>(
+                                    future: GetUserName(documentId: docID)
+                                        .getUserName(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Text('Loading...',
+                                            style:
+                                                TextStyle(color: Colors.white));
+                                      } else if (snapshot.hasError) {
+                                        print(snapshot.error);
+                                        return Text('Error',
+                                            style:
+                                                TextStyle(color: Colors.white));
+                                      } else if (snapshot.hasData &&
+                                          snapshot.data != null) {
+                                        String userName = snapshot.data!;
+                                        return Text(
+                                          "Hi $userName!",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        );
+                                      } else {
+                                        return Text('Username not available',
+                                            style:
+                                                TextStyle(color: Colors.white));
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              // Notifications
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: const EdgeInsets.all(12),
+                                    child: const Icon(
+                                      Icons.notifications,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 45,
+                                  ),
+                                  Text(
+                                    formattedDate!,
+                                    style: TextStyle(
+                                        color: Colors.blue[200], fontSize: 20),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 25,
+                          ),
+                          // Search bar
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: EdgeInsets.all(12),
+                            child: Row(
                               children: [
-                                ProfilePicture(userId: docID),
+                                Icon(Icons.search, color: Colors.black),
+                                SizedBox(width: 5),
+                                Text(
+                                  'Search',
+                                  style: TextStyle(color: Colors.black),
+                                ),
                               ],
                             ),
-                            FutureBuilder<String>(
-                              future: GetUserName(documentId: docID)
-                                  .getUserName(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Text('Loading...',
-                                      style: TextStyle(color: Colors.white));
-                                } else if (snapshot.hasError) {
-                                  print(snapshot.error);
-                                  return Text('Error',
-                                      style: TextStyle(color: Colors.white));
-                                } else if (snapshot.hasData &&
-                                    snapshot.data != null) {
-                                  String userName = snapshot.data!;
-                                  return Text(
-                                    "Hi $userName!",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  );
-                                } else {
-                                  return Text('Username not available',
-                                      style: TextStyle(color: Colors.white));
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                        // Notifications
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              padding: const EdgeInsets.all(12),
-                              child: const Icon(
-                                Icons.notifications,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 45,
-                            ),
-                            Text(
-                              formattedDate!,
-                              style: TextStyle(
-                                  color: Colors.blue[200], fontSize: 20),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    // Search bar
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: EdgeInsets.all(12),
-                      child: Row(
-                        children: [
-                          Icon(Icons.search, color: Colors.black),
-                          SizedBox(width: 5),
-                          Text(
-                            'Search',
-                            style: TextStyle(color: Colors.black),
+                          ),
+                          SizedBox(
+                            height: 25,
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 25,
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(25)),
+                        child: Container(
+                          padding: EdgeInsets.all(25),
+                          color: Colors.grey[300],
+                          child: Center(
+                            child: Column(
+                              children: [
+                                // Heading
+                                const Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Social Page',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Icon(Icons.more_horiz),
+                                  ],
+                                ),
+                                SizedBox(height: 25),
+                                // Content
+                                Expanded(
+                                  child: ListView(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () async {
+                                          final paragraphPdf =
+                                              await ParagraphPdfApi
+                                                  .generateParagraphPdf(docID);
+                                          SaveAndOpenDocument.openPdf(
+                                              paragraphPdf);
+                                        },
+                                        child: Text('Generate PDF'),
+                                      ),
+                                      TextButton(
+                                        onPressed: sharePdfLink,
+                                        child: Text('Share PDF Link'),
+                                      ),
+                                      TextButton(
+                                        onPressed: sharePortfolio,
+                                        child: Text('Share Portfolio Text'),
+                                      ),
+                                      TextButton(
+                                        onPressed: shareToInstagramStory,
+                                        child: Text('Share to Instagram Story'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-                  child: Container(
-                    padding: EdgeInsets.all(25),
-                    color: Colors.grey[300],
-                    child: Center(
-                      child: Column(
-                        children: [
-                          // Heading
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Social Page',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Icon(Icons.more_horiz),
-                            ],
-                          ),
-                          SizedBox(height: 25),
-                          // Content
-                          Expanded(
-                            child: ListView(
-                              children: [
-                                TextButton(
-                                  onPressed: () async {
-                                    final paragraphPdf = await ParagraphPdfApi.generateParagraphPdf(docID);
-                                    SaveAndOpenDocument.openPdf(paragraphPdf);
-                                  },
-                                  child: Text('Generate PDF'),
-                                ),
-                                TextButton(
-                                  onPressed: sharePdfLink,
-                                  child: Text('Share PDF Link'),
-                                ),
-                                TextButton(
-                                  onPressed: sharePortfolio,
-                                  child: Text('Share Portfolio Text'),
-                                ),
-                                TextButton(
-                                  onPressed: shareToInstagramStory,
-                                  child: Text('Share to Instagram Story'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
     );
   }
 }
-
-
-
-

@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:scholar_sphere/backend/auth.dart';
-import 'package:scholar_sphere/util/gradient_service.dart';
-import 'package:scholar_sphere/util/profile_picture.dart';
 import 'package:scholar_sphere/backend/read_data/get_user_name.dart';
 import 'package:scholar_sphere/pages/academics_page.dart';
 import 'package:scholar_sphere/pages/awards_page.dart';
@@ -12,7 +9,10 @@ import 'package:scholar_sphere/pages/clubs_page.dart';
 import 'package:scholar_sphere/pages/ec_page.dart';
 import 'package:scholar_sphere/pages/other_page.dart';
 import 'package:scholar_sphere/util/ec_tile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scholar_sphere/backend/auth.dart';
 import 'package:scholar_sphere/util/gradient_service.dart';
+import 'package:scholar_sphere/util/profile_picture.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   var now = DateTime.now();
   var formatter = DateFormat.yMMMMd('en_US');
   String? formattedDate;
-  String docID = "";
+  String docID = "6cHwPquSMMkpue7r6RRN";
 
   @override
   void initState() {
@@ -78,24 +78,19 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<LinearGradient>(
-        stream: docID.isNotEmpty
-            ? GradientService(userId: docID).getGradientStream()
-            : Stream.value(LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Color(0xff56018D), Colors.pink],
-              )),
+        stream: GradientService(userId:docID ?? '').getGradientStream(),
         builder: (context, snapshot) {
           final gradient = snapshot.data ??
               LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [Color(0xff56018D), Colors.pink],
+                colors: [
+                  Color(0xff56018D),
+                  Colors.pink,
+                ],
               );
           return Container(
-            decoration: BoxDecoration(
-              gradient: gradient,
-            ),
+            decoration: BoxDecoration(gradient: gradient),
             child: SafeArea(
               child: Column(
                 children: [
@@ -113,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Stack(
                                   children: [
-                                    ProfilePicture(userId: docID),
+                                    ProfilePicture(userId: docID,)
                                   ],
                                 ),
                                 FutureBuilder<String>(
@@ -123,13 +118,11 @@ class _HomePageState extends State<HomePage> {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
                                       return Text('Loading...',
-                                          style:
-                                              TextStyle(color: Colors.white));
+                                          style: TextStyle(color: Colors.white));
                                     } else if (snapshot.hasError) {
                                       print(snapshot.error.toString());
                                       return Text('Error',
-                                          style:
-                                              TextStyle(color: Colors.white));
+                                          style: TextStyle(color: Colors.white));
                                     } else if (snapshot.hasData &&
                                         snapshot.data != null) {
                                       String userName = snapshot.data!;
@@ -143,11 +136,10 @@ class _HomePageState extends State<HomePage> {
                                       );
                                     } else {
                                       return Text('Username not available',
-                                          style:
-                                              TextStyle(color: Colors.white));
+                                          style: TextStyle(color: Colors.white));
                                     }
                                   },
-                                ),
+                                )
                               ],
                             ),
                             //Noti
@@ -171,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                                   formattedDate!,
                                   style: TextStyle(
                                       color: Colors.blue[200], fontSize: 20),
-                                ),
+                                )
                               ],
                             ),
                           ],
@@ -179,6 +171,7 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(
                           height: 25,
                         ),
+
                         //search bar
                         Container(
                           decoration: BoxDecoration(
@@ -186,16 +179,14 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              Icon(Icons.search, color: Colors.black),
-                              SizedBox(width: 5),
-                              Text(
-                                'Search',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ],
-                          ),
+                          child: Row(children: [
+                            Icon(Icons.search, color: Colors.black),
+                            SizedBox(width: 5),
+                            Text(
+                              'Search',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ]),
                         ),
                         SizedBox(
                           height: 25,
@@ -203,6 +194,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+
                   Expanded(
                     child: ClipRRect(
                       borderRadius:
@@ -215,8 +207,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               //heading
                               const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Your Portfolio',
@@ -238,12 +229,10 @@ class _HomePageState extends State<HomePage> {
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                AcademicsPage(userId: docID),
-                                          ),
-                                        );
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AcademicsPage(userId: docID,)));
                                       },
                                       child: EcTile(
                                         icon: Icons.lightbulb,
@@ -254,12 +243,10 @@ class _HomePageState extends State<HomePage> {
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                AwardsPage(userId: docID),
-                                          ),
-                                        );
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AwardsPage(userId: docID,)));
                                       },
                                       child: EcTile(
                                         icon: Icons.emoji_events,
@@ -268,52 +255,46 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     GestureDetector(
-                                      onTap: () {
+                                      onTap: (){
                                         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ClubsPage(userId: docID),
-                                          ),
-                                        );
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ClubsPage(userId: docID,)));
                                       },
                                       child: EcTile(
-                                        icon: Icons.groups,
-                                        EcName: 'Clubs',
-                                        color: Colors.pink,
-                                      ),
+                                      icon: Icons.groups,
+                                      EcName: 'Clubs',
+                                      color: Colors.pink,
+                                    ),
                                     ),
                                     GestureDetector(
-                                      onTap: () {
+                                      onTap: (){
                                         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                EcsPage(userId: docID),
-                                          ),
-                                        );
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EcsPage(userId: docID,)));
                                       },
                                       child: EcTile(
-                                        icon: Icons.assignment,
-                                        EcName: 'Extracurricular',
-                                        color: Colors.green,
-                                      ),
+                                      icon: Icons.assignment,
+                                      EcName: 'Extracurricular',
+                                      color: Colors.green,
+                                    ),
                                     ),
                                     GestureDetector(
-                                      onTap: () {
+                                      onTap: (){
                                         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                OthersPage(userId: docID),
-                                          ),
-                                        );
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OthersPage(userId: docID,)));
                                       },
                                       child: EcTile(
-                                        icon: Icons.more_horiz,
-                                        EcName: 'Other',
-                                        color: Colors.purple,
-                                      ),
+                                      icon: Icons.more_horiz,
+                                      EcName: 'Other',
+                                      color: Colors.purple,
+                                    ),
                                     ),
                                   ],
                                 ),
