@@ -38,7 +38,7 @@ class _VRTourScreenState extends State<VRTourScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('College VR Tours'),
+        title: Text('Scholar Sphere College VR Tours'),
         backgroundColor: Colors.deepPurple[900],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
