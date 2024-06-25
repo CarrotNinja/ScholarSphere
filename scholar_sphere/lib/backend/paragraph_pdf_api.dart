@@ -12,7 +12,9 @@ class ParagraphPdfApi{
         build: (context) => [
           customHeader(),
           customHeadline(),
-        ]
+        ],
+        header: (context)=> buildPageNumber(context),
+        footer: (context)=> buildPageNumber(context),
       ),
     );
     return SaveAndOpenDocument.savePdf(name: 'ScholarSpherePortfolio.pdf', pdf:pdf);
@@ -50,5 +52,13 @@ class ParagraphPdfApi{
     ),
     padding: const EdgeInsets.all(8.0),
     decoration: const BoxDecoration(color: PdfColors.red),
+  );
+  static Widget buildPageNumber (Context context) => Container(
+    alignment: Alignment.center,
+    margin: const EdgeInsets.only(top:10),
+    child: Text(
+      'Page ${context.pageNumber} of ${context.pagesCount}',
+      style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),
+    )
   );
 }

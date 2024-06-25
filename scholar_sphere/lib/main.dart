@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:scholar_sphere/backend/widget_tree.dart';
 import 'package:scholar_sphere/pages/awards_page.dart';
 import 'package:scholar_sphere/pages/home_page.dart';
+import 'package:scholar_sphere/pages/scholarships.dart';
 import 'package:scholar_sphere/pages/settings_page.dart';
 import 'package:scholar_sphere/pages/to_do.dart';
 import 'package:scholar_sphere/pages/welcome_screen.dart';
