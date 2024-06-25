@@ -90,7 +90,7 @@ class _ScholarshipScreenState extends State<ScholarshipScreen> {
                 });
               },
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 17),
             TextField(
               controller: _scoreController,
               decoration: InputDecoration(
@@ -104,7 +104,7 @@ class _ScholarshipScreenState extends State<ScholarshipScreen> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: _findScholarship,
-              child: Text('Find Scholarship'),
+              child: Text('Find A Scholarship'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange, // Button background color
                 foregroundColor: Colors.white, // Button text color
