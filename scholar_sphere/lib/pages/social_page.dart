@@ -211,11 +211,11 @@ class _SocialPageState extends State<SocialPage> {
                 )),
           builder: (context, snapshot) {
             final gradient = snapshot.data ??
-              LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Color(0xff56018D), Colors.pink],
-              );
+                LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Color(0xff56018D), Colors.pink],
+                );
             return Container(
               decoration: BoxDecoration(
                 gradient: gradient,
@@ -358,27 +358,124 @@ class _SocialPageState extends State<SocialPage> {
                                 Expanded(
                                   child: ListView(
                                     children: [
-                                      TextButton(
-                                        onPressed: () async {
-                                          final paragraphPdf =
-                                              await ParagraphPdfApi
-                                                  .generateParagraphPdf(docID);
-                                          SaveAndOpenDocument.openPdf(
-                                              paragraphPdf);
-                                        },
-                                        child: Text('Generate PDF'),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          gradient: gradient,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: () async {
+                                            final paragraphPdf =
+                                                await ParagraphPdfApi
+                                                    .generateParagraphPdf(
+                                                        docID);
+                                            SaveAndOpenDocument.openPdf(
+                                                paragraphPdf);
+                                          },
+                                          child: Text(
+                                            'Generate PDF',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16.0,
+                                                vertical: 8.0),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      TextButton(
-                                        onPressed: sharePdfLink,
-                                        child: Text('Share PDF Link'),
+                                      SizedBox(height: 10,),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          gradient: gradient,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: sharePdfLink
+                                          ,
+                                          child: Text(
+                                            'Share PDF Link',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16.0,
+                                                vertical: 8.0),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      TextButton(
-                                        onPressed: sharePortfolio,
-                                        child: Text('Share Portfolio Text'),
+                                      SizedBox(height: 10,),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          gradient: gradient,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: sharePortfolio,
+                                          child: Text(
+                                            'Share Portfolio Text',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16.0,
+                                                vertical: 8.0),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      TextButton(
-                                        onPressed: shareToInstagramStory,
-                                        child: Text('Share to Instagram Story'),
+                                      SizedBox(height: 10,),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          gradient: gradient,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: shareToInstagramStory,
+                                          child: Text(
+                                            'Share to Instagram Story',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16.0,
+                                                vertical: 8.0),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
