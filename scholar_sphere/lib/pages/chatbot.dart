@@ -7,7 +7,7 @@ class AdvancedChatbot extends StatefulWidget {
 
 class _AdvancedChatbotState extends State<AdvancedChatbot> {
   final TextEditingController _textController = TextEditingController();
-  List<String> _chatMessages = [];
+  final List<String> _chatMessages = [];
 
   final Map<String, String> responses = {
     "login": "To get started, please login or signup first. If you have issues with logging in or signing up, please don't hesitate to ask! We have a Forgot Password button if you face any issues with your password. Once logged in, you can explore the application, display and share your portfolio, and much more!",
@@ -40,7 +40,7 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
   void _handleSubmitted(String message) {
     setState(() {
       _chatMessages.add("User: $message");
-      String response = responses[message.toLowerCase().trim()]!;
+      String response = responses[message.toLowerCase().trim()] ?? "I'm not sure how to respond to that. Please ask a question related to the high school portfolio app.";
       _chatMessages.add("Bot: $response");
     });
     _textController.clear();
@@ -56,33 +56,28 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
       body: Column(
         children: [
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color.fromARGB(255, 255, 255, 255)!, const Color.fromARGB(255, 255, 255, 255)!],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: ListView.builder(
-                itemCount: _chatMessages.length,
-                itemBuilder: (context, index) {
-                  return Container(
+            child: ListView.builder(
+              itemCount: _chatMessages.length,
+              itemBuilder: (context, index) {
+                bool isUserMessage = _chatMessages[index].startsWith("User: ");
+                return Align(
+                  alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Container(
                     margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
                     padding: EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      color: index % 2 == 0 ? Color.fromARGB(255, 255, 193, 101) : Color.fromARGB(255, 87, 255, 252),
+                      color: isUserMessage ? Colors.orange : Colors.purple,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Text(
-                      _chatMessages[index],
+                      _chatMessages[index].replaceFirst(isUserMessage ? "User: " : "Bot: ", ""),
                       style: TextStyle(
-                        color: index % 2 == 0 ? Colors.orange[900] : Colors.purple[900],
+                        color: Colors.white,
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
           Padding(
@@ -93,11 +88,12 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
                   child: TextField(
                     controller: _textController,
                     decoration: InputDecoration(
-                      hintText: 'Type your message...',
+                      hintText: 'Enter a message',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.grey[200],
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
                       ),
                     ),
                     onSubmitted: _handleSubmitted,
@@ -106,7 +102,7 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
                 SizedBox(width: 8.0),
                 IconButton(
                   icon: Icon(Icons.send),
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).primaryColor,
                   onPressed: () {
                     _handleSubmitted(_textController.text);
                   },
