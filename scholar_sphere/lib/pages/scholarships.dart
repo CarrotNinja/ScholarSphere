@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 
 
-class ScholarshipScreen extends StatefulWidget {
+class ScholarshipFinder extends StatefulWidget {
   @override
   _ScholarshipScreenState createState() => _ScholarshipScreenState();
 }
 
-class _ScholarshipScreenState extends State<ScholarshipScreen> {
+class _ScholarshipScreenState extends State<ScholarshipFinder> {
   final TextEditingController _scoreController = TextEditingController();
   String? _selectedTest;
   String _result = '';
@@ -53,7 +53,7 @@ class _ScholarshipScreenState extends State<ScholarshipScreen> {
 
     setState(() {
       _result = 'Your percentile: $percentile\n\n'
-                'For important merit scholarships, visit the following link:\n'
+                'For merit-based scholarships, visit the following link:\n'
                 'https://www.princetonreview.com/college-advice/sat-act-scores-merit-scholarships';
     });
   }
