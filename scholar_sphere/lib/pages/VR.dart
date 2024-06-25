@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
+import 'package:flutter/services.dart';
+
 
 class VRTourScreen extends StatefulWidget {
   @override
@@ -24,21 +25,50 @@ class _VRTourScreenState extends State<VRTourScreen> {
     {'name': 'North Park University', 'link': 'https://www.youtube.com/watch?v=sCRVn4nFvq4'},
     {'name': 'North Idaho College', 'link': 'https://www.youtube.com/watch?v=cuW9aFP98BQ'},
     {'name': 'University of St. Thomas', 'link': 'https://www.youtube.com/watch?v=nvYV2EeB5Jc'},
-    {'name': 'Texas A&M University', 'link': 'https://www.youtube.com/watch?v=ojjDIduvN4c'},
+    {'name': 'Texas A&M', 'link': 'https://www.youtube.com/watch?v=ojjDIduvN4c'},
     {'name': 'Santa Clara University', 'link': 'https://www.youtube.com/watch?v=uQSMSLolz2A'},
     {'name': 'UGA', 'link': 'https://www.youtube.com/watch?v=h1g5mTi4pPA'},
     {'name': 'Oxford', 'link': 'https://www.youtube.com/watch?v=qUwmb5lyvYQ'},
   ];
 
-  void _launchURL(String url) {
-    html.window.open(url, '_blank');
+  void _showLinkDialog(BuildContext context, String url) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Open Link'),
+          content: GestureDetector(
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: url));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Copied to clipboard: $url'),
+                ),
+              );
+            },
+            child: Text(
+              url,
+              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scholar Sphere College VR Tours'),
+        title: Text('College VR Tours'),
         backgroundColor: Colors.deepPurple[900],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -77,7 +107,9 @@ class _VRTourScreenState extends State<VRTourScreen> {
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                       trailing: Icon(Icons.open_in_new, color: Colors.orange),
-                      onTap: () => _launchURL(_vrTours[index]['link']!),
+                      onTap: () {
+                        _showLinkDialog(context, _vrTours[index]['link']!);
+                      },
                     ),
                   );
                 },
