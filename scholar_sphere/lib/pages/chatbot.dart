@@ -12,11 +12,11 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
   final Map<String, String> responses = {
     "login": "To get started, please login or signup first. If you have issues with logging in or signing up, please don't hesitate to ask! We have a Forgot Password button if you face any issues with your password. Once logged in, you can explore the application, display and share your portfolio, and much more!",
     "signup": "To get started, please login or signup first. If you have issues with logging in or signing up, please don't hesitate to ask! We have a Forgot Password button if you face any issues with your password. Once logged in, you can explore the application, display and share your portfolio, and much more.",
-    "get started": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more.",
-    "upload transcript": "You can upload your transcripts and display your grades in Scholar Sphere. Simply navigate to the upload section and follow the instructions.",
+    "how does this app work": "To get started, please login or signup first. Once logged in, you can explore the application, display and share your portfolio, and much more. If you have any other questions, please don't hesitate to ask!",
+    "how do I upload my transcript": "You can upload your transcripts and display your grades in Scholar Sphere. Simply navigate to the upload section and follow the instructions.",
     "grades": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
     "gpa": "You can upload your transcripts and display your grades (like GPA) within the app. Simply navigate to the upload section and follow the instructions.",
-    "awards": "You can showcase your personalized awards, clubs, and extracurricular activities in your portfolio. Head over to the portfolio section to add these details.",
+    "how can I add awards": "To add awards in Scholar Sphere, simply navigate over to the Home Page and click on the button Awards. Then, click the + button to add awards. You can delete your awards as necessary as well. If you have any other questions, please don't hesitate to ask!",
     "clubs": "You can showcase your personalized awards, clubs, and extracurricular activities in your portfolio. Head over to the portfolio section to add these details.",
     "extracurriculars": "You can showcase your personalized awards, clubs, and extracurricular activities in your portfolio. Head over to the portfolio section to add these details.",
     "forgot password": "If you've forgotten your password, click on the 'Forgot Password' button on the login page to reset it.",
@@ -27,7 +27,7 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
     "to do list": "Our app features a welcome screen, a to-do list, a home page, and a settings page to help you manage and customize your experience.",
     "home page": "Our app features a welcome screen, a to-do list, a home page, and a settings page to help you manage and customize your experience.",
     "settings": "Our app features a welcome screen, a to-do list, a home page, and a settings page to help you manage and customize your experience.",
-    "how does the app work": "Our app allows you to create and manage your high school portfolio. You can upload your transcripts, display your grades, showcase your awards and extracurricular activities, and share your portfolio with others. Explore the app to discover more features!",
+    "how does app work": "Our app allows you to create and manage your high school portfolio. You can upload your transcripts, display your grades, showcase your awards and extracurricular activities, and share your portfolio with others. Explore the app to discover more features!",
     "app functionality": "Our app allows you to create and manage your high school portfolio. You can upload your transcripts, display your grades, showcase your awards and extracurricular activities, and share your portfolio with others. Explore the app to discover more features!",
     "features": "Our app allows you to create and manage your high school portfolio. You can upload your transcripts, display your grades, showcase your awards and extracurricular activities, and share your portfolio with others. Explore the app to discover more features!",
     "what can this app do": "This app helps you manage and showcase your high school portfolio. You can upload and display your grades, achievements, and extracurricular activities, share your portfolio on social media, and customize your profile with various features.",
@@ -50,7 +50,7 @@ class _AdvancedChatbotState extends State<AdvancedChatbot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scholar Sphere Chatbot'),
+        title: Text('Chatbot'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
