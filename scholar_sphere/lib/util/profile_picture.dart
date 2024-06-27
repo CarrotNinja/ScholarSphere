@@ -47,8 +47,8 @@ class _ProfilePictureState extends State<ProfilePicture> {
             ).image,
           ) : null,
         ),
-        child: pickedImage==null ? Center(
-          child: Icon(
+        child: pickedImage==null ? const Center(
+          child:  Icon(
             Icons.person_rounded,
             color: Colors.black38,
             size: 35,
