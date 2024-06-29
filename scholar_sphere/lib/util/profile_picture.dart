@@ -30,16 +30,16 @@ class _ProfilePictureState extends State<ProfilePicture> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { //Returns the user selected profile
     return GestureDetector(
-      onTap: onProfileTapped,
+      onTap: onProfileTapped, //Calls function to change profile picture
       child: Container(
         height: 100,
         width: 100,
-        decoration: BoxDecoration(
+        decoration: BoxDecoration(//Decoration widget
           color: Colors.grey,
           shape: BoxShape.circle,
-          image: pickedImage!=null ? DecorationImage(
+          image: pickedImage!=null ? DecorationImage( //Display the user selected image, or a default icon
             fit: BoxFit.cover,
             image: Image.memory(
               pickedImage!,
@@ -73,17 +73,17 @@ class _ProfilePictureState extends State<ProfilePicture> {
     }
   }
 
-  Future<void> onProfileTapped() async {
+  Future<void> onProfileTapped() async { //Async to allow for user to choose image
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if(image==null) return;
-    final storageRef = FirebaseStorage.instance.ref();
-    final imageRef = storageRef.child(widget.userId+'.jpg');
-    final imageBytes = await image.readAsBytes();
-    await imageRef.putData(imageBytes);
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);//Awaits for image to be picked
+    if(image==null) return;//Returns if no image is selected
+    final storageRef = FirebaseStorage.instance.ref();//Firebase reference
+    final imageRef = storageRef.child(widget.userId+'.jpg');//Sets unique image id
+    final imageBytes = await image.readAsBytes();//Data convert
+    await imageRef.putData(imageBytes);//Uploads
 
     setState(() {
-      pickedImage = imageBytes;
+      pickedImage = imageBytes;//Resets the state of all pages
     });
   }
 }
